@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "GEMS Reconstruction Provenance",
+  "type": "object",
+  "required": ["source_id", "origin", "epistemic_status", "authority"],
+  "properties": {
+    "source_id": {"type": "string"},
+    "origin": {"enum": ["human", "ai", "joint", "uncertain"]},
+    "epistemic_status": {"enum": ["explicit", "inferred", "unknown", "conflicted"]},
+    "authority": {"enum": ["observation", "analysis", "proposal", "human_authorization"]},
+    "parent_ids": {"type": "array", "items": {"type": "string"}},
+    "note": {"type": ["string", "null"]}
+  }
+}
