@@ -5,9 +5,15 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "gems-infrastructure"
 version = "0.1.0"
-description = "Evidence-preserving multi-Gem orchestration baseline reconstructed from GEMS-FER-1.0 evidence."
+description = "Evidence-preserving multi-Gem orchestration baseline reconstructed from the GEMS-FER-1.0 forensic package"
+readme = "README.md"
 requires-python = ">=3.11"
+license = { text = "Apache-2.0" }
+authors = [{ name = "William King" }]
 dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
