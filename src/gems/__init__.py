@@ -5,10 +5,16 @@ from gems.core.workflow import ExecutionResult, WorkflowCoordinator, WorkflowSta
 from gems.core.handoff import HandoffValidator
 from gems.governance import HumanAuthorityGuard, GovernanceValidator
 from gems.integrations.tie import TIEPackageAdapter
+from gems.integrations.verified_artifact import (
+    VerificationStatus,
+    VerifiedArtifactAdapter,
+    VerifiedArtifactResult,
+)
 from gems.cognition import Triad42
 
 __all__ = [
     "GemRegistry", "Router", "WorkflowCoordinator", "WorkflowState", "ExecutionResult",
     "HandoffValidator",
     "HumanAuthorityGuard", "GovernanceValidator", "TIEPackageAdapter", "Triad42",
+    "VerificationStatus", "VerifiedArtifactAdapter", "VerifiedArtifactResult",
 ]
