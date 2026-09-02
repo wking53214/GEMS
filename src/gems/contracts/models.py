@@ -27,6 +27,13 @@ class Authority(str, Enum):
     HUMAN_AUTHORIZATION = "human_authorization"
 
 
+class WorkflowStatus(str, Enum):
+    CREATED = "created"
+    RUNNING = "running"
+    COMPLETED = "completed"
+    FAILED = "failed"
+
+
 @dataclass(frozen=True)
 class Provenance:
     source_id: str
