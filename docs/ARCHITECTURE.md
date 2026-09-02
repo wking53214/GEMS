@@ -32,3 +32,10 @@ The diagram is a reconstruction baseline, not a historical recovered diagram.
 4. TIE-derived material remains evidence-linked.
 5. Review mechanisms may challenge a proposal but do not silently create authority.
 6. Unknown historical details remain explicit rather than fabricated.
+
+Workflow execution exposes a typed lifecycle (`created`, `running`, `completed`,
+`failed`). The existing `execute()` API remains compatible, while
+`execute_enveloped()` additionally returns a structured result containing the
+task and artifact identity, provenance, execution state, and explicit
+placeholders for integrity, telemetry, and verification supplied by future
+integrations.
