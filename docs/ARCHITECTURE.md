@@ -39,3 +39,9 @@ Workflow execution exposes a typed lifecycle (`created`, `running`, `completed`,
 task and artifact identity, provenance, execution state, and explicit
 placeholders for integrity, telemetry, and verification supplied by future
 integrations.
+
+`gems.integrations.verified_artifact` defines the future integration boundary
+for external artifact verification and lineage. It carries source/output
+artifacts, external identities, transformation identity, and verification
+status, but deliberately does not implement hashing, canonicalization,
+attestation, or repository-specific dependencies.
