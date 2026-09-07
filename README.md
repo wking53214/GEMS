@@ -43,6 +43,15 @@ prompts/           recovered/preserved prompt references
 python -m pytest
 ```
 
+## `transport/` — a second, unreconciled direction
+
+`transport/` holds an earlier, independent implementation salvaged from the
+local working tree (never previously committed): an enforced
+`ConservationGateway` around `conservation_kernel` plus a 20-attack hostile
+corpus. It is landed as-is and **not wired into this package** — different
+architecture, overlapping `src/gems/` on contracts/registry/TIE without being
+reconciled. See `transport/PROVENANCE.md`.
+
 ## Design rule
 
 The implementation preserves the distinction between:
