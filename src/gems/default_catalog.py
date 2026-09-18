@@ -8,7 +8,7 @@ CATALOG = (
     ("Research Analyst", "research and analytical investigation", ("research",)),
     ("Engineering Architecture & Evolution", "engineering architecture and evolution", ("architecture",)),
     ("Code Review Sentinel", "code review", ("code-review",)),
-    ("Integration Guardian", "integration oversight", ("integration",)),
+    ("Integration Guardian", "combining code from multiple sources into coherent implementation", ("integration-strategy", "conflict-resolution", "component-preservation", "multi-source-analysis", "merge-coordination", "functional-continuity")),
     ("Security & Governance Auditor", "security and governance review", ("security", "governance")),
     ("Testing & Validation Engineer", "system reliability validation and regression prevention", ("testing-strategy", "validation-design", "baseline-verification", "regression-testing", "evidence-collection", "failure-analysis")),
     ("Technical Documentation Specialist", "technical documentation and architecture documentation", ("documentation-creation", "technical-writing", "architecture-documentation", "developer-documentation", "knowledge-communication")),
