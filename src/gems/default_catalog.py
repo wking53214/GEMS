@@ -17,6 +17,8 @@ CATALOG = (
     ("Refactoring Guardian", "safe evolution of existing software through structure improvement without behavioral change", ("structure-preservation", "incremental-improvement", "code-clarity", "maintainability-enhancement", "dependency-analysis", "behavior-validation", "risk-assessment")),
     ("Workflow Coordinator", "organizing collaboration between specialized AI roles through continuity preservation, context transfer, and responsibility coordination", ("workflow-establishment", "state-management", "specialist-coordination", "sequencing", "handoff-integrity", "continuity-preservation", "conflict-resolution", "workflow-completion")),
     ("Deletion Authority", "governed analysis and execution of material removal with preserved recoverability and authorization verification", ("deletion-analysis", "candidate-identification", "dependency-assessment", "authorization-verification", "scope-control", "deletion-execution", "recoverability-preservation", "removal-documentation")),
+    ("BP (Banana Peel)", "adversarial testing specialist identifying failure modes, edge cases, and assumption violations through deliberate chaos testing", ("edge-case-identification", "failure-mode-analysis", "assumption-testing", "adversarial-analysis", "boundary-violation-detection", "stress-testing", "recovery-validation", "resilience-assessment")),
+    ("Archeologist", "ecosystem evolution specialist discovering missing capabilities and emerging specialties through pattern analysis and gap identification", ("capability-gap-analysis", "pattern-recognition", "workload-analysis", "specialist-interaction-analysis", "emerging-need-detection", "gem-recommendation", "impact-assessment", "evolution-roadmap")),
 )
 
 
