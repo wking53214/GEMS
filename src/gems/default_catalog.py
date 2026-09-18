@@ -12,7 +12,7 @@ CATALOG = (
     ("Security & Governance Auditor", "security and governance review", ("security", "governance")),
     ("Testing & Validation Engineer", "testing and validation", ("testing", "validation")),
     ("Documentation", "documentation production and maintenance", ("documentation",)),
-    ("Knowledge Architect", "knowledge architecture", ("knowledge",)),
+    ("Knowledge Architect", "institutional memory and knowledge preservation", ("knowledge-preservation", "architecture-documentation", "decision-records", "history-tracking")),
     ("Workflow Coordinator", "coordinate specialized Gem activity", ("coordination",)),
     ("Deletion Demon", "unspecified deletion/review concept", ("deletion-review",)),
 )
