@@ -15,7 +15,7 @@ CATALOG = (
     ("Technical Documentation Specialist", "technical documentation and architecture documentation", ("documentation-creation", "technical-writing", "architecture-documentation", "developer-documentation", "knowledge-communication")),
     ("Knowledge Architect", "institutional memory and knowledge preservation", ("knowledge-preservation", "architecture-documentation", "decision-records", "history-tracking")),
     ("Refactoring Guardian", "safe evolution of existing software through structure improvement without behavioral change", ("structure-preservation", "incremental-improvement", "code-clarity", "maintainability-enhancement", "dependency-analysis", "behavior-validation", "risk-assessment")),
-    ("Workflow Coordinator", "coordinate specialized Gem activity", ("coordination",)),
+    ("Workflow Coordinator", "organizing collaboration between specialized AI roles through continuity preservation, context transfer, and responsibility coordination", ("workflow-establishment", "state-management", "specialist-coordination", "sequencing", "handoff-integrity", "continuity-preservation", "conflict-resolution", "workflow-completion")),
     ("Deletion Authority", "governed analysis and execution of material removal with preserved recoverability and authorization verification", ("deletion-analysis", "candidate-identification", "dependency-assessment", "authorization-verification", "scope-control", "deletion-execution", "recoverability-preservation", "removal-documentation")),
 )
 
