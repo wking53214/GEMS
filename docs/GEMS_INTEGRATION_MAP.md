@@ -2,7 +2,7 @@
 
 ## Current Status: FORMALIZATION COMPLETE
 
-### All 13 Gems Fully Formalized (with Specification + Routing Rules)
+### All 15 Gems Fully Formalized (with Specification + Routing Rules)
 
 ✓ **1. Requirements Analyst**
 - Specification: REQUIREMENTS_ANALYST_GEM.md (580+ lines)
@@ -94,6 +94,20 @@
 - Purpose: Organizing collaboration between specialized AI roles
 - Capabilities: workflow-establishment, state-management, specialist-coordination, sequencing, handoff-integrity, continuity-preservation, conflict-resolution, workflow-completion
 - Authority: Coordinates work; does not perform specialized tasks or override specialist judgment
+
+✓ **14. BP (Banana Peel)**
+- Specification: BP_GEM.md (450+ lines)
+- Routing Rules: BP_ROUTING.md (380+ lines)
+- Purpose: Adversarial testing specialist identifying failure modes and edge cases
+- Capabilities: edge-case-identification, failure-mode-analysis, assumption-testing, adversarial-analysis, boundary-violation-detection, stress-testing, recovery-validation, resilience-assessment
+- Authority: Identifies vulnerabilities; recommends improvements; does not enforce or fix
+
+✓ **15. Archeologist**
+- Specification: ARCHEOLOGIST_GEM.md (480+ lines)
+- Routing Rules: ARCHEOLOGIST_ROUTING.md (380+ lines)
+- Purpose: Ecosystem evolution specialist discovering missing capabilities and emerging specialties
+- Capabilities: capability-gap-analysis, pattern-recognition, workload-analysis, specialist-interaction-analysis, emerging-need-detection, gem-recommendation, impact-assessment, evolution-roadmap
+- Authority: Identifies missing specialties; recommends new Gems; does not create Gems unilaterally
 
 ---
 
@@ -366,7 +380,7 @@ To achieve full Router v2.6 representation in GEMS:
 
 ### Formalization Status: COMPLETE ✓
 
-**All 13 Gems Fully Formalized**
+**All 15 Gems Fully Formalized**
 1. Requirements Analyst
 2. Research Analyst
 3. Systems Architect
@@ -380,27 +394,31 @@ To achieve full Router v2.6 representation in GEMS:
 11. Refactoring Guardian
 12. Deletion Authority
 13. Workflow Coordinator
+14. BP (Banana Peel)
+15. Archeologist
 
-**Total Documentation:** 5,400+ lines of specifications and routing rules
+**Total Documentation:** 6,500+ lines of specifications and routing rules
 
-**Router v2.6 Coverage:** ~95% (13 Gems cover primary, support, coordination, and deletion workflows)
+**Router v2.6 Coverage:** ~98% (15 Gems cover primary, support, coordination, deletion, testing, and evolution workflows)
 
 **Integration Maturity:** High across all Gems with bidirectional integration points, clear authority boundaries, and comprehensive routing rules
 
 ### Production Readiness Status
 
 **Specification Completeness:** ✓ Complete
-- All 13 Gems specified with role, purpose, capabilities, authority
+- All 15 Gems specified with role, purpose, capabilities, authority
 - All routing rules defined with automatic and conditional escalation triggers
 - All integration points documented
 
 **Real-World Validation:** ⏳ Pending (Phase 2-3)
-- Requires controlled workflow testing
+- Requires controlled workflow testing with test track
+- Requires BP chaos testing to validate robustness
+- Requires Archeologist gap analysis to identify future evolution
 - Requires practitioner feedback
 - Specifications may require refinement based on validation results
 
 **Readiness Decision Gate:** Before treating GEMS as production-ready, confirm:
-- ✓ All 13 Gems are formally specified
+- ✓ All 15 Gems are formally specified
 - ⏳ Real-world workflows have been successfully routed
 - ⏳ Continuity preservation has been validated
 - ⏳ Practitioner feedback supports value proposition
