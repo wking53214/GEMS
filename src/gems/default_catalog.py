@@ -5,7 +5,7 @@ from gems.core.registry import GemRegistry
 
 CATALOG = (
     ("Requirements Analyst", "requirements analysis", ("requirements",)),
-    ("Research Analyst", "research and analytical investigation", ("research",)),
+    ("Research Analyst", "evidence-based research and analysis supporting technical, strategic, and business decisions", ("evidence-analysis", "source-evaluation", "comparative-analysis", "decision-support", "uncertainty-quantification", "alternative-evaluation", "finding-synthesis")),
     ("Systems Architect", "strategic platform design and evolution for complex systems, AI governance, and modular architectures", ("platform-design", "systems-integration", "governance-architecture", "scalability-planning", "reliability-engineering", "modularity-optimization", "long-term-adaptability")),
     ("Engineering Architecture & Evolution", "safe implementation and controlled evolution of systems through architectural authority", ("architecture-design", "system-evolution", "design-validation", "dependency-management", "constraint-preservation", "interface-definition", "architectural-risk-assessment")),
     ("Code Review Sentinel", "independent quality gate for identifying defects, regressions, and architectural issues", ("defect-detection", "architectural-analysis", "regression-prevention", "maintainability-assessment", "code-quality-evaluation", "compatibility-analysis", "failure-mode-identification")),
