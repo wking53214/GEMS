@@ -1,0 +1,417 @@
+{
+  "timestamp": "2026-09-18T17:28:56.767884",
+  "run_name": "phase2_execution",
+  "workflows": {
+    "workflow-001": {
+      "workflow_id": "workflow-001",
+      "total_duration_seconds": 0.00017380714416503906,
+      "gem_count": 9,
+      "gems_executed": [
+        "Requirements Analyst",
+        "Research Analyst",
+        "Systems Architect",
+        "Engineering Architecture & Evolution",
+        "Code Review Sentinel",
+        "Security & Governance Auditor",
+        "Testing & Validation Engineer",
+        "Integration Guardian",
+        "Knowledge Architect"
+      ],
+      "routing_accuracy": 0.8888888888888888,
+      "continuity_preservation": 1.0,
+      "authority_violations": 0,
+      "output_quality": 0.8499999999999999,
+      "efficiency_rating": 29918.217832647464,
+      "success": true,
+      "issues": [],
+      "gem_details": {
+        "Requirements Analyst": {
+          "gem_name": "Requirements Analyst",
+          "duration_seconds": 7.3909759521484375e-06,
+          "routing_correct": true,
+          "context_preserved": true,
+          "authority_respected": true,
+          "output_quality_score": 0.85,
+          "errors": []
+        },
+        "Research Analyst": {
+          "gem_name": "Research Analyst",
+          "duration_seconds": 8.225440979003906e-05,
+          "routing_correct": true,
+          "context_preserved": true,
+          "authority_respected": true,
+          "output_quality_score": 0.85,
+          "errors": []
+        },
+        "Systems Architect": {
+          "gem_name": "Systems Architect",
+          "duration_seconds": 1.0728836059570312e-05,
+          "routing_correct": false,
+          "context_preserved": true,
+          "authority_respected": true,
+          "output_quality_score": 0.85,
+          "errors": []
+        },
+        "Engineering Architecture & Evolution": {
+          "gem_name": "Engineering Architecture & Evolution",
+          "duration_seconds": 7.152557373046875e-06,
+          "routing_correct": true,
+          "context_preserved": true,
+          "authority_respected": true,
+          "output_quality_score": 0.85,
+          "errors": []
+        },
+        "Code Review Sentinel": {
+          "gem_name": "Code Review Sentinel",
+          "duration_seconds": 3.814697265625e-06,
+          "routing_correct": true,
+          "context_preserved": true,
+          "authority_respected": true,
+          "output_quality_score": 0.85,
+          "errors": []
+        },
+        "Security & Governance Auditor": {
+          "gem_name": "Security & Governance Auditor",
+          "duration_seconds": 3.814697265625e-06,
+          "routing_correct": true,
+          "context_preserved": true,
+          "authority_respected": true,
+          "output_quality_score": 0.85,
+          "errors": []
+        },
+        "Testing & Validation Engineer": {
+          "gem_name": "Testing & Validation Engineer",
+          "duration_seconds": 3.337860107421875e-06,
+          "routing_correct": true,
+          "context_preserved": true,
+          "authority_respected": true,
+          "output_quality_score": 0.85,
+          "errors": []
+        },
+        "Integration Guardian": {
+          "gem_name": "Integration Guardian",
+          "duration_seconds": 2.2172927856445312e-05,
+          "routing_correct": true,
+          "context_preserved": true,
+          "authority_respected": true,
+          "output_quality_score": 0.85,
+          "errors": []
+        },
+        "Knowledge Architect": {
+          "gem_name": "Knowledge Architect",
+          "duration_seconds": 6.9141387939453125e-06,
+          "routing_correct": true,
+          "context_preserved": true,
+          "authority_respected": true,
+          "output_quality_score": 0.85,
+          "errors": []
+        }
+      }
+    },
+    "workflow-002": {
+      "workflow_id": "workflow-002",
+      "total_duration_seconds": 1.6927719116210938e-05,
+      "gem_count": 4,
+      "gems_executed": [
+        "Refactoring Guardian",
+        "Security & Governance Auditor",
+        "Code Review Sentinel",
+        "Testing & Validation Engineer"
+      ],
+      "routing_accuracy": 0.75,
+      "continuity_preservation": 1.0,
+      "authority_violations": 0,
+      "output_quality": 0.85,
+      "efficiency_rating": 159501.70140845072,
+      "success": true,
+      "issues": [],
+      "gem_details": {
+        "Refactoring Guardian": {
+          "gem_name": "Refactoring Guardian",
+          "duration_seconds": 2.86102294921875e-06,
+          "routing_correct": false,
+          "context_preserved": true,
+          "authority_respected": true,
+          "output_quality_score": 0.85,
+          "errors": []
+        },
+        "Security & Governance Auditor": {
+          "gem_name": "Security & Governance Auditor",
+          "duration_seconds": 2.384185791015625e-06,
+          "routing_correct": true,
+          "context_preserved": true,
+          "authority_respected": true,
+          "output_quality_score": 0.85,
+          "errors": []
+        },
+        "Code Review Sentinel": {
+          "gem_name": "Code Review Sentinel",
+          "duration_seconds": 2.6226043701171875e-06,
+          "routing_correct": true,
+          "context_preserved": true,
+          "authority_respected": true,
+          "output_quality_score": 0.85,
+          "errors": []
+        },
+        "Testing & Validation Engineer": {
+          "gem_name": "Testing & Validation Engineer",
+          "duration_seconds": 2.6226043701171875e-06,
+          "routing_correct": true,
+          "context_preserved": true,
+          "authority_respected": true,
+          "output_quality_score": 0.85,
+          "errors": []
+        }
+      }
+    },
+    "workflow-003": {
+      "workflow_id": "workflow-003",
+      "total_duration_seconds": 3.409385681152344e-05,
+      "gem_count": 6,
+      "gems_executed": [
+        "Integration Guardian",
+        "Code Review Sentinel",
+        "Testing & Validation Engineer",
+        "Deletion Authority",
+        "Deletion Authority Omega",
+        "Knowledge Architect"
+      ],
+      "routing_accuracy": 0.6666666666666666,
+      "continuity_preservation": 1.0,
+      "authority_violations": 0,
+      "output_quality": 0.85,
+      "efficiency_rating": 102657.79020979021,
+      "success": true,
+      "issues": [],
+      "gem_details": {
+        "Integration Guardian": {
+          "gem_name": "Integration Guardian",
+          "duration_seconds": 4.5299530029296875e-06,
+          "routing_correct": true,
+          "context_preserved": true,
+          "authority_respected": true,
+          "output_quality_score": 0.85,
+          "errors": []
+        },
+        "Code Review Sentinel": {
+          "gem_name": "Code Review Sentinel",
+          "duration_seconds": 2.86102294921875e-06,
+          "routing_correct": true,
+          "context_preserved": true,
+          "authority_respected": true,
+          "output_quality_score": 0.85,
+          "errors": []
+        },
+        "Testing & Validation Engineer": {
+          "gem_name": "Testing & Validation Engineer",
+          "duration_seconds": 2.6226043701171875e-06,
+          "routing_correct": true,
+          "context_preserved": true,
+          "authority_respected": true,
+          "output_quality_score": 0.85,
+          "errors": []
+        },
+        "Deletion Authority": {
+          "gem_name": "Deletion Authority",
+          "duration_seconds": 2.384185791015625e-06,
+          "routing_correct": false,
+          "context_preserved": true,
+          "authority_respected": true,
+          "output_quality_score": 0.85,
+          "errors": []
+        },
+        "Deletion Authority Omega": {
+          "gem_name": "Deletion Authority Omega",
+          "duration_seconds": 1.1205673217773438e-05,
+          "routing_correct": false,
+          "context_preserved": true,
+          "authority_respected": true,
+          "output_quality_score": 0.85,
+          "errors": []
+        },
+        "Knowledge Architect": {
+          "gem_name": "Knowledge Architect",
+          "duration_seconds": 3.0994415283203125e-06,
+          "routing_correct": true,
+          "context_preserved": true,
+          "authority_respected": true,
+          "output_quality_score": 0.85,
+          "errors": []
+        }
+      }
+    },
+    "workflow-004": {
+      "workflow_id": "workflow-004",
+      "total_duration_seconds": 2.0503997802734375e-05,
+      "gem_count": 6,
+      "gems_executed": [
+        "Systems Architect",
+        "Engineering Architecture & Evolution",
+        "Research Analyst",
+        "Code Review Sentinel",
+        "Testing & Validation Engineer",
+        "Knowledge Architect"
+      ],
+      "routing_accuracy": 0.8333333333333334,
+      "continuity_preservation": 1.0,
+      "authority_violations": 0,
+      "output_quality": 0.85,
+      "efficiency_rating": 185329.71162790697,
+      "success": true,
+      "issues": [],
+      "gem_details": {
+        "Systems Architect": {
+          "gem_name": "Systems Architect",
+          "duration_seconds": 1.6689300537109375e-06,
+          "routing_correct": false,
+          "context_preserved": true,
+          "authority_respected": true,
+          "output_quality_score": 0.85,
+          "errors": []
+        },
+        "Engineering Architecture & Evolution": {
+          "gem_name": "Engineering Architecture & Evolution",
+          "duration_seconds": 1.9073486328125e-06,
+          "routing_correct": true,
+          "context_preserved": true,
+          "authority_respected": true,
+          "output_quality_score": 0.85,
+          "errors": []
+        },
+        "Research Analyst": {
+          "gem_name": "Research Analyst",
+          "duration_seconds": 1.9073486328125e-06,
+          "routing_correct": true,
+          "context_preserved": true,
+          "authority_respected": true,
+          "output_quality_score": 0.85,
+          "errors": []
+        },
+        "Code Review Sentinel": {
+          "gem_name": "Code Review Sentinel",
+          "duration_seconds": 1.9073486328125e-06,
+          "routing_correct": true,
+          "context_preserved": true,
+          "authority_respected": true,
+          "output_quality_score": 0.85,
+          "errors": []
+        },
+        "Testing & Validation Engineer": {
+          "gem_name": "Testing & Validation Engineer",
+          "duration_seconds": 2.6226043701171875e-06,
+          "routing_correct": true,
+          "context_preserved": true,
+          "authority_respected": true,
+          "output_quality_score": 0.85,
+          "errors": []
+        },
+        "Knowledge Architect": {
+          "gem_name": "Knowledge Architect",
+          "duration_seconds": 3.814697265625e-06,
+          "routing_correct": true,
+          "context_preserved": true,
+          "authority_respected": true,
+          "output_quality_score": 0.85,
+          "errors": []
+        }
+      }
+    },
+    "workflow-005": {
+      "workflow_id": "workflow-005",
+      "total_duration_seconds": 2.3603439331054688e-05,
+      "gem_count": 7,
+      "gems_executed": [
+        "Requirements Analyst",
+        "Research Analyst",
+        "Systems Architect",
+        "Engineering Architecture & Evolution",
+        "Code Review Sentinel",
+        "Testing & Validation Engineer",
+        "Knowledge Architect"
+      ],
+      "routing_accuracy": 0.8571428571428571,
+      "continuity_preservation": 1.0,
+      "authority_violations": 0,
+      "output_quality": 0.8499999999999999,
+      "efficiency_rating": 194886.8525252525,
+      "success": true,
+      "issues": [],
+      "gem_details": {
+        "Requirements Analyst": {
+          "gem_name": "Requirements Analyst",
+          "duration_seconds": 1.430511474609375e-06,
+          "routing_correct": true,
+          "context_preserved": true,
+          "authority_respected": true,
+          "output_quality_score": 0.85,
+          "errors": []
+        },
+        "Research Analyst": {
+          "gem_name": "Research Analyst",
+          "duration_seconds": 1.9073486328125e-06,
+          "routing_correct": true,
+          "context_preserved": true,
+          "authority_respected": true,
+          "output_quality_score": 0.85,
+          "errors": []
+        },
+        "Systems Architect": {
+          "gem_name": "Systems Architect",
+          "duration_seconds": 2.86102294921875e-06,
+          "routing_correct": false,
+          "context_preserved": true,
+          "authority_respected": true,
+          "output_quality_score": 0.85,
+          "errors": []
+        },
+        "Engineering Architecture & Evolution": {
+          "gem_name": "Engineering Architecture & Evolution",
+          "duration_seconds": 1.9073486328125e-06,
+          "routing_correct": true,
+          "context_preserved": true,
+          "authority_respected": true,
+          "output_quality_score": 0.85,
+          "errors": []
+        },
+        "Code Review Sentinel": {
+          "gem_name": "Code Review Sentinel",
+          "duration_seconds": 2.1457672119140625e-06,
+          "routing_correct": true,
+          "context_preserved": true,
+          "authority_respected": true,
+          "output_quality_score": 0.85,
+          "errors": []
+        },
+        "Testing & Validation Engineer": {
+          "gem_name": "Testing & Validation Engineer",
+          "duration_seconds": 2.6226043701171875e-06,
+          "routing_correct": true,
+          "context_preserved": true,
+          "authority_respected": true,
+          "output_quality_score": 0.85,
+          "errors": []
+        },
+        "Knowledge Architect": {
+          "gem_name": "Knowledge Architect",
+          "duration_seconds": 3.814697265625e-06,
+          "routing_correct": true,
+          "context_preserved": true,
+          "authority_respected": true,
+          "output_quality_score": 0.85,
+          "errors": []
+        }
+      }
+    }
+  },
+  "aggregate_stats": {
+    "total_workflows": 5,
+    "successful_workflows": 5,
+    "success_rate": 1.0,
+    "avg_routing_accuracy": 0.7992063492063493,
+    "avg_continuity_preservation": 1.0,
+    "total_authority_violations": 0,
+    "avg_output_quality": 0.85,
+    "avg_efficiency": 134458.85472080956,
+    "total_execution_time": 0.0002689361572265625
+  }
+}
