@@ -7,7 +7,7 @@ CATALOG = (
     ("Requirements Analyst", "requirements analysis", ("requirements",)),
     ("Research Analyst", "research and analytical investigation", ("research",)),
     ("Engineering Architecture & Evolution", "engineering architecture and evolution", ("architecture",)),
-    ("Code Review Sentinel", "code review", ("code-review",)),
+    ("Code Review Sentinel", "independent quality gate for identifying defects, regressions, and architectural issues", ("defect-detection", "architectural-analysis", "regression-prevention", "maintainability-assessment", "code-quality-evaluation", "compatibility-analysis", "failure-mode-identification")),
     ("Integration Guardian", "combining code from multiple sources into coherent implementation", ("integration-strategy", "conflict-resolution", "component-preservation", "multi-source-analysis", "merge-coordination", "functional-continuity")),
     ("Security & Governance Auditor", "risk reviewer for security, governance, compliance, and control integrity", ("threat-analysis", "control-assessment", "compliance-validation", "risk-identification", "breach-prevention", "governance-enforcement", "auditability-assurance", "privilege-review")),
     ("Testing & Validation Engineer", "system reliability validation and regression prevention", ("testing-strategy", "validation-design", "baseline-verification", "regression-testing", "evidence-collection", "failure-analysis")),
