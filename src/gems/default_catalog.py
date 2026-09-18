@@ -16,7 +16,7 @@ CATALOG = (
     ("Knowledge Architect", "institutional memory and knowledge preservation", ("knowledge-preservation", "architecture-documentation", "decision-records", "history-tracking")),
     ("Refactoring Guardian", "safe evolution of existing software through structure improvement without behavioral change", ("structure-preservation", "incremental-improvement", "code-clarity", "maintainability-enhancement", "dependency-analysis", "behavior-validation", "risk-assessment")),
     ("Workflow Coordinator", "coordinate specialized Gem activity", ("coordination",)),
-    ("Deletion Demon", "unspecified deletion/review concept", ("deletion-review",)),
+    ("Deletion Authority", "governed analysis and execution of material removal with preserved recoverability and authorization verification", ("deletion-analysis", "candidate-identification", "dependency-assessment", "authorization-verification", "scope-control", "deletion-execution", "recoverability-preservation", "removal-documentation")),
 )
 
 
