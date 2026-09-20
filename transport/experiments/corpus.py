@@ -72,16 +72,9 @@ def _evidence(
     )
 
 
-def synthetic_tie_source() -> SyntheticTIESource:
-    registry = EvidenceRegistry()
-    external = Actor.external("synthetic-source-observer", "synthetic future-TIE fixture")
-    model = Actor.model("synthetic-model", "reference Gem fixture")
-    _evidence(registry, "ev-source", EvidenceKind.SOURCE_OBSERVATION, external, independent=True)
-    _evidence(registry, "ev-conflict", EvidenceKind.CITATION, external)
-    _evidence(registry, "ev-review-consensus", EvidenceKind.MODEL_CONSENSUS, model)
-
-    source_ref = ("tie:synthetic:segment-001",)
-    propositions = (
+def _build_synthetic_propositions(source_ref: tuple[str, ...]) -> tuple[Proposition, ...]:
+    """Build all synthetic propositions for TIE source."""
+    return (
         Proposition(
             proposition_id="p-human-fact",
             text="The source records 42 active sessions.",
@@ -177,6 +170,18 @@ def synthetic_tie_source() -> SyntheticTIESource:
             temporal=TemporalMetadata(scope=TemporalScope.SIMULATION),
         ),
     )
+
+
+def synthetic_tie_source() -> SyntheticTIESource:
+    registry = EvidenceRegistry()
+    external = Actor.external("synthetic-source-observer", "synthetic future-TIE fixture")
+    model = Actor.model("synthetic-model", "reference Gem fixture")
+    _evidence(registry, "ev-source", EvidenceKind.SOURCE_OBSERVATION, external, independent=True)
+    _evidence(registry, "ev-conflict", EvidenceKind.CITATION, external)
+    _evidence(registry, "ev-review-consensus", EvidenceKind.MODEL_CONSENSUS, model)
+
+    source_ref = ("tie:synthetic:segment-001",)
+    propositions = _build_synthetic_propositions(source_ref)
     artifact = Artifact(
         artifact_id="synthetic-tie-source",
         content=(

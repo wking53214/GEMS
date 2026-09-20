@@ -180,7 +180,7 @@ class RealGemsWorkflowEngine:
                 gem_metric = GemMetrics(
                     gem_name=step.gem_name,
                     duration_seconds=time.time() - step_start,
-                    routing_correct=False,  # Routing failed
+                    routing_correct=False,
                     context_preserved=False,
                     authority_respected=False,
                     output_quality_score=0.0,

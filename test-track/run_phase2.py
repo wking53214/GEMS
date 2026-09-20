@@ -120,26 +120,11 @@ def run_phase2_execution():
     return results, system_score
 
 
-def generate_markdown_report(workflows, system_score):
-    """Generate a markdown report of the execution results."""
-
-    report_lines = [
-        "# Phase 2: Controlled Workflow Testing - Execution Log",
-        "",
-        "**Execution Status:** ✓ COMPLETE",
-        "**Workflows Tested:** 5 representative scenarios",
-        "**Total Execution Time:** ~{:.1f} seconds".format(
-            sum(m.total_duration_seconds for m in workflows.values())
-        ),
-        "**Test Track Version:** 1.0 (Functional Implementation)",
-        "",
-        "---",
-        "",
-    ]
-
-    # Per-workflow details
+def _workflow_details_section(workflows):
+    """Build per-workflow details section."""
+    lines = []
     for wid, metrics in sorted(workflows.items()):
-        report_lines.extend([
+        lines.extend([
             f"## {wid}: {metrics.workflow_id}",
             "",
             "| Metric | Expected | Actual | Status |",
@@ -154,32 +139,31 @@ def generate_markdown_report(workflows, system_score):
             f"| Workflow success | Yes | {'Yes' if metrics.success else 'No'} | {'✓' if metrics.success else '✗'} |",
             "",
         ])
-
-        # Issues
         if metrics.issues:
-            report_lines.append("**Issues Identified:**")
+            lines.append("**Issues Identified:**")
             for issue in metrics.issues:
-                report_lines.append(f"- {issue}")
-            report_lines.append("")
+                lines.append(f"- {issue}")
+            lines.append("")
+    return lines
 
-    # Summary statistics
-    report_lines.extend([
+
+def _summary_statistics_section(workflows, system_score):
+    """Build summary statistics section."""
+    lines = [
         "## Phase 2 Summary Statistics",
         "",
         "### Workflow-Level Results",
         "",
         "| Workflow | Status | Duration | Specialists | Success | Issues |",
         "|----------|--------|----------|-------------|---------|--------|",
-    ])
-
+    ]
     for wid, metrics in sorted(workflows.items()):
-        report_lines.append(
+        lines.append(
             f"| {wid} | ✓ | {metrics.total_duration_seconds:.1f}s | "
             f"{len(metrics.gems_executed)} | {'Yes' if metrics.success else 'No'} | "
             f"{len(metrics.issues)} |"
         )
-
-    report_lines.extend([
+    lines.extend([
         "",
         "### Aggregate Metrics",
         "",
@@ -191,6 +175,13 @@ def generate_markdown_report(workflows, system_score):
         "",
         f"**Output Quality:** {sum(m.output_quality for m in workflows.values()) / len(workflows):.1%}",
         "",
+    ])
+    return lines
+
+
+def _conclusion_section(workflows, system_score):
+    """Build conclusion section."""
+    return [
         "## Phase 2 Conclusion",
         "",
         "**Phase 2 Status:** ✓ SUCCESSFUL",
@@ -204,13 +195,31 @@ def generate_markdown_report(workflows, system_score):
         "**Recommendation:** PROCEED TO PHASE 3 (Practitioner Feedback)",
         "",
         "The GEMS specification is sound, well-designed, and ready for practitioner validation.",
-    ])
+    ]
 
-    # Write report
+
+def generate_markdown_report(workflows, system_score):
+    """Generate a markdown report of the execution results."""
+    report_lines = [
+        "# Phase 2: Controlled Workflow Testing - Execution Log",
+        "",
+        "**Execution Status:** ✓ COMPLETE",
+        "**Workflows Tested:** 5 representative scenarios",
+        "**Total Execution Time:** ~{:.1f} seconds".format(
+            sum(m.total_duration_seconds for m in workflows.values())
+        ),
+        "**Test Track Version:** 1.0 (Functional Implementation)",
+        "",
+        "---",
+        "",
+    ]
+    report_lines.extend(_workflow_details_section(workflows))
+    report_lines.extend(_summary_statistics_section(workflows, system_score))
+    report_lines.extend(_conclusion_section(workflows, system_score))
+
     report_path = Path("test-track") / "PHASE2_EXECUTION_LOG.md"
     with open(report_path, "w") as f:
         f.write("\n".join(report_lines))
-
     print(f"Markdown report saved to: {report_path}")
 
 
