@@ -10,10 +10,15 @@ readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "Apache-2.0" }
 authors = [{ name = "William King" }]
-dependencies = []
+dependencies = [
+    "conservation-kernel",  # Required for transport layer and forensic verification
+]
 
 [project.optional-dependencies]
 dev = ["pytest>=8"]
+transport = [
+    "conservation-kernel",  # For transport.gems_transport and forensic integrity verification
+]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
