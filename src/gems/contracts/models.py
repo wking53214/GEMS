@@ -21,6 +21,17 @@ class Origin(str, Enum):
 
 
 class Authority(str, Enum):
+    """Authority level taxonomy for forensic decision tracking.
+
+    OBSERVATION: Fact-level data (no decision authority)
+    ANALYSIS: System analysis with supporting evidence
+    PROPOSAL: Proposed solution pending human review
+    HUMAN_AUTHORIZATION: Human-approved authorization level
+
+    Note: PROPOSAL and HUMAN_AUTHORIZATION are reserved for potential future use
+    (currently only used in tests). They represent higher authority levels in the
+    forensic taxonomy but production code does not yet generate them.
+    """
     OBSERVATION = "observation"
     ANALYSIS = "analysis"
     PROPOSAL = "proposal"
