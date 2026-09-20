@@ -18,8 +18,6 @@
                     TIE Adapter
                           |
                     TIE_PACKAGE
-
-              Triad+42 = review/challenge plane
 ```
 
 The diagram is a reconstruction baseline, not a historical recovered diagram.
