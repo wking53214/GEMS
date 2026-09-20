@@ -28,8 +28,6 @@ class Authority(str, Enum):
 
 
 class WorkflowStatus(str, Enum):
-    CREATED = "created"
-    RUNNING = "running"
     COMPLETED = "completed"
     FAILED = "failed"
 
@@ -55,14 +53,10 @@ class Artifact:
 
 @dataclass(frozen=True)
 class Handoff:
-    handoff_id: str = field(default_factory=lambda: str(uuid4()))
     task_id: str = ""
     sender: str = ""
     recipient: str = ""
     artifacts: tuple[Artifact, ...] = ()
-    routing_signal: str | None = None
-    workflow_state: str | None = None
-    metadata: Mapping[str, Any] = field(default_factory=dict)
 
 
 @dataclass(frozen=True)
@@ -70,7 +64,3 @@ class GemSpec:
     name: str
     purpose: str
     capabilities: tuple[str, ...]
-    status: str = "conceptual"
-    authority: tuple[Authority, ...] = (Authority.ANALYSIS, Authority.PROPOSAL)
-    provenance: Provenance | None = None
-    implementation_status: str = "reconstructed-baseline"
