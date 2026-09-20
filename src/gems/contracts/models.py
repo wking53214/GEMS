@@ -7,6 +7,15 @@ from uuid import uuid4
 
 
 class EpistemicStatus(str, Enum):
+    """Epistemic status taxonomy for forensic artifact classification.
+
+    EXPLICIT: User directly provided or declared this
+    INFERRED: System derived this from other data
+    UNKNOWN: Status cannot be determined
+    CONFLICTED: Multiple conflicting sources of information
+
+    Note: CONFLICTED is reserved for future use (currently only used in tests).
+    """
     EXPLICIT = "explicit"
     INFERRED = "inferred"
     UNKNOWN = "unknown"
@@ -14,6 +23,15 @@ class EpistemicStatus(str, Enum):
 
 
 class Origin(str, Enum):
+    """Origin taxonomy for forensic provenance tracking.
+
+    HUMAN: Originated from human user
+    AI: Originated from AI system
+    JOINT: Originated from both human and AI collaboration
+    UNCERTAIN: Origin cannot be determined
+
+    Note: HUMAN and JOINT are reserved for potential future use (currently only used in tests).
+    """
     HUMAN = "human"
     AI = "ai"
     JOINT = "joint"
@@ -21,6 +39,17 @@ class Origin(str, Enum):
 
 
 class Authority(str, Enum):
+    """Authority level taxonomy for forensic decision tracking.
+
+    OBSERVATION: Fact-level data (no decision authority)
+    ANALYSIS: System analysis with supporting evidence
+    PROPOSAL: Proposed solution pending human review
+    HUMAN_AUTHORIZATION: Human-approved authorization level
+
+    Note: PROPOSAL and HUMAN_AUTHORIZATION are reserved for potential future use
+    (currently only used in tests). They represent higher authority levels in the
+    forensic taxonomy but production code does not yet generate them.
+    """
     OBSERVATION = "observation"
     ANALYSIS = "analysis"
     PROPOSAL = "proposal"
@@ -28,6 +57,14 @@ class Authority(str, Enum):
 
 
 class WorkflowStatus(str, Enum):
+    """Workflow outcome status for forensic audit trail.
+
+    COMPLETED: Workflow completed successfully
+    FAILED: Workflow encountered an error or failed
+
+    Note: FAILED is reserved for error tracking (currently only used in tests).
+    Production code only creates COMPLETED status artifacts.
+    """
     COMPLETED = "completed"
     FAILED = "failed"
 

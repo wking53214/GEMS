@@ -2,16 +2,6 @@
 
 from dataclasses import dataclass, field
 from typing import Dict, List, Any
-from enum import Enum
-
-
-class MetricType(Enum):
-    ROUTING_ACCURACY = "routing_accuracy"
-    CONTEXT_PRESERVATION = "context_preservation"
-    AUTHORITY_RESPECT = "authority_respect"
-    OUTPUT_QUALITY = "output_quality"
-    EFFICIENCY = "efficiency"
-    ERROR_RATE = "error_rate"
 
 
 @dataclass
