@@ -20,4 +20,3 @@ This repository is **not** presented as the recovered historical GEMS repository
 - Typed Python handoff envelope: PROPOSED implementation of the recovered typed-handoff concept.
 - Generic TIE package adapter: PROPOSED implementation boundary.
 - Constitutional guardrails: implementation of explicit governance constraints.
-- Triad+42 reviewers: deterministic review interfaces representing recovered conceptual roles.

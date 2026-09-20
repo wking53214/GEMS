@@ -9,7 +9,6 @@ from gems.core.registry import GemRegistry
 class Route:
     gem: str
     capability: str
-    reason: str
 
 
 class Router:
@@ -24,4 +23,4 @@ class Router:
             raise LookupError(f"No Gem advertises capability: {capability}")
         matches.sort(key=lambda g: g.name)
         selected = matches[0]
-        return Route(selected.name, capability, "exact capability match")
+        return Route(selected.name, capability)
