@@ -93,21 +93,73 @@ class RealGemsWorkflowEngine:
         )
         self.execution_history: List[WorkflowExecution] = []
 
+    def _execute_step(
+        self, step: WorkflowStep, context: Dict[str, Any], metrics: WorkflowMetrics
+    ) -> tuple[bool, str | None]:
+        """Execute a single workflow step. Returns (success, error_msg)."""
+        step_start = time.time()
+        try:
+            input_artifact = Artifact(
+                content=f"Input for {step.capability}",
+                provenance=Provenance(
+                    source_id="workflow",
+                    origin=Origin.AI,
+                    epistemic_status=EpistemicStatus.INFERRED,
+                    authority=Authority.ANALYSIS,
+                ),
+            )
+            handoff = self.coordinator.execute_capability(
+                step.capability, input_artifact, context
+            )
+            step_duration = time.time() - step_start
+
+            result = handoff.artifacts[0]
+            gem_metric = GemMetrics(
+                gem_name=step.gem_name,
+                duration_seconds=step_duration,
+                routing_correct=handoff.recipient == step.gem_name,
+                context_preserved=True,
+                authority_respected=result.provenance is not None
+                    and result.provenance.authority in (Authority.ANALYSIS, Authority.PROPOSAL),
+                output_quality_score=result.metadata.get("quality_score", 0.85),
+                errors=[],
+            )
+            metrics.gem_metrics[step.gem_name] = gem_metric
+            metrics.gems_executed.append(step.gem_name)
+
+            context[f"{step.capability}_result"] = result
+            for output in step.provides_outputs:
+                context[output] = result.content
+            return True, None
+        except LookupError as e:
+            metrics.gem_metrics[step.gem_name] = GemMetrics(
+                gem_name=step.gem_name,
+                duration_seconds=time.time() - step_start,
+                routing_correct=False,
+                context_preserved=False,
+                authority_respected=False,
+                output_quality_score=0.0,
+                errors=[str(e)],
+            )
+            return False, f"routing failed: {str(e)}"
+        except Exception as e:
+            metrics.gem_metrics[step.gem_name] = GemMetrics(
+                gem_name=step.gem_name,
+                duration_seconds=time.time() - step_start,
+                routing_correct=False,
+                context_preserved=False,
+                authority_respected=False,
+                output_quality_score=0.0,
+                errors=[str(e)],
+            )
+            return False, f"failed: {str(e)}"
+
     def execute_workflow(
         self,
         workflow: WorkflowDefinition,
         custom_gem_executors: Dict[str, Callable] = None,
     ) -> WorkflowExecution:
-        """
-        Execute workflow using real GEMS execution path.
-
-        Args:
-            workflow: WorkflowDefinition to execute
-            custom_gem_executors: Custom executors (not used for routing validation)
-
-        Returns:
-            WorkflowExecution with results
-        """
+        """Execute workflow using real GEMS execution path."""
         if custom_gem_executors is None:
             custom_gem_executors = {}
 
@@ -121,100 +173,20 @@ class RealGemsWorkflowEngine:
             gems_executed=[],
         )
 
-        # Execute each step using real GEMS coordinator
         for step in workflow.steps:
-            step_start = time.time()
-
-            try:
-                # Create input artifact
-                input_content = f"Input for {step.capability}"
-                input_artifact = Artifact(
-                    content=input_content,
-                    provenance=Provenance(
-                        source_id="workflow",
-                        origin=Origin.AI,
-                        epistemic_status=EpistemicStatus.INFERRED,
-                        authority=Authority.ANALYSIS,
-                    ),
-                )
-
-                # Execute using REAL coordinator (which uses REAL router)
-                handoff = self.coordinator.execute_capability(
-                    step.capability, input_artifact, context
-                )
-
-                step_duration = time.time() - step_start
-
-                # Extract metrics from execution
-                result_artifact = handoff.artifacts[0]
-                routing_correct = handoff.recipient == step.gem_name  # Verify routing
-                quality_score = result_artifact.metadata.get("quality_score", 0.85)
-                authority_respected = (
-                    result_artifact.provenance is not None
-                    and result_artifact.provenance.authority
-                    in (Authority.ANALYSIS, Authority.PROPOSAL)
-                )
-
-                # Record execution in context
-                context[f"{step.capability}_result"] = result_artifact
-                for output in step.provides_outputs:
-                    context[output] = result_artifact.content
-
-                # Create gem metrics
-                gem_metric = GemMetrics(
-                    gem_name=step.gem_name,
-                    duration_seconds=step_duration,
-                    routing_correct=routing_correct,
-                    context_preserved=True,
-                    authority_respected=authority_respected,
-                    output_quality_score=quality_score,
-                    errors=[],
-                )
-
-                metrics.gem_metrics[step.gem_name] = gem_metric
-                metrics.gems_executed.append(step.gem_name)
+            success, error = self._execute_step(step, context, metrics)
+            if success:
                 steps_executed.append(step.gem_name)
-
-            except LookupError as e:
-                # Routing failed
-                gem_metric = GemMetrics(
-                    gem_name=step.gem_name,
-                    duration_seconds=time.time() - step_start,
-                    routing_correct=False,  # Routing failed
-                    context_preserved=False,
-                    authority_respected=False,
-                    output_quality_score=0.0,
-                    errors=[str(e)],
-                )
-                metrics.gem_metrics[step.gem_name] = gem_metric
+            else:
                 metrics.success = False
-                metrics.issues.append(f"Step {step.gem_name} routing failed: {str(e)}")
+                metrics.issues.append(f"Step {step.gem_name} {error}")
 
-            except Exception as e:
-                # General execution failure
-                gem_metric = GemMetrics(
-                    gem_name=step.gem_name,
-                    duration_seconds=time.time() - step_start,
-                    routing_correct=False,
-                    context_preserved=False,
-                    authority_respected=False,
-                    output_quality_score=0.0,
-                    errors=[str(e)],
-                )
-                metrics.gem_metrics[step.gem_name] = gem_metric
-                metrics.success = False
-                metrics.issues.append(f"Step {step.gem_name} failed: {str(e)}")
-
-        # Calculate aggregate metrics
         total_time = time.time() - start_time
         metrics.total_duration_seconds = total_time
         metrics.calculate_aggregate_scores()
-
-        # Calculate efficiency
         if workflow.expected_duration > 0:
             metrics.efficiency_rating = workflow.expected_duration / total_time
 
-        # Record execution
         execution = WorkflowExecution(
             workflow_id=workflow.workflow_id,
             steps_executed=steps_executed,
@@ -222,7 +194,6 @@ class RealGemsWorkflowEngine:
             metrics=metrics,
         )
         self.execution_history.append(execution)
-
         return execution
 
     def get_execution_summary(self) -> Dict[str, Any]:
