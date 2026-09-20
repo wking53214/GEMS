@@ -10,11 +10,9 @@ from gems.integrations.verified_artifact import (
     VerifiedArtifactAdapter,
     VerifiedArtifactResult,
 )
-from gems.cognition import Triad42
-
 __all__ = [
     "GemRegistry", "Router", "WorkflowCoordinator", "WorkflowState", "ExecutionResult",
     "HandoffValidator",
-    "HumanAuthorityGuard", "GovernanceValidator", "TIEPackageAdapter", "Triad42",
+    "HumanAuthorityGuard", "GovernanceValidator", "TIEPackageAdapter",
     "VerificationStatus", "VerifiedArtifactAdapter", "VerifiedArtifactResult",
 ]
