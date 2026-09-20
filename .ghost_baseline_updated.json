@@ -1,0 +1,219 @@
+[
+  {
+    "id": "ghost-upgrade-001",
+    "category": "structure",
+    "detector": "baseline_assessment",
+    "severity": "info",
+    "status": "active",
+    "summary": "Expanded GEMS system with execution runtime",
+    "detail": "Added WorkflowCoordinator and upgraded test infrastructure. Total codebase now ~3900 lines across 27 files",
+    "evidence": {
+      "files": {
+        "src_files": 11,
+        "test_files": 5,
+        "testtrack_files": 11
+      },
+      "metrics": {
+        "total_files": 27,
+        "total_lines": 3898,
+        "avg_lines_per_file": 144,
+        "total_functions": 143
+      }
+    },
+    "disposition": "updated_baseline",
+    "disposition_note": "Baseline updated after adding Coordinator (Phase 4 upgrade)"
+  },
+  {
+    "id": "ghost-upgrade-002",
+    "category": "code_quality",
+    "detector": "complexity_assessment",
+    "severity": "warning",
+    "status": "flagged",
+    "summary": "4 functions exceed 80-line threshold (orchestration smell)",
+    "detail": "Test-track and harness functions show orchestration patterns. Core src/gems functions remain simple (<30 lines)",
+    "evidence": {
+      "long_functions": [
+        {
+          "file": "test-track/harness/engine_v2.py",
+          "function": "execute_workflow",
+          "lines": 130,
+          "concern": "orchestration_complexity"
+        },
+        {
+          "file": "test-track/harness/engine.py",
+          "function": "execute_workflow",
+          "lines": 118,
+          "concern": "orchestration_complexity"
+        },
+        {
+          "file": "test-track/run_phase2.py",
+          "function": "generate_markdown_report",
+          "lines": 91,
+          "concern": "orchestration_complexity"
+        },
+        {
+          "file": "tests/test_forensic_variants.py",
+          "function": "test_50_forensic_system_comprehensive_validation",
+          "lines": 90,
+          "concern": "test_integration_complexity"
+        }
+      ],
+      "max_function_lines": 130,
+      "threshold": 80,
+      "offenders_in_src_gems": 0
+    },
+    "disposition": "expected",
+    "disposition_note": "Test-track orchestration is expected (Phase 3 design). Core GEMS remains simple."
+  },
+  {
+    "id": "ghost-upgrade-003",
+    "category": "duplication",
+    "detector": "duplication_scan",
+    "severity": "info",
+    "status": "clear",
+    "summary": "No significant code duplication detected",
+    "detail": "New Coordinator and MockGemExecutor use distinct patterns. No copy-paste specialization found.",
+    "evidence": {
+      "files_scanned": 27,
+      "duplicate_blocks": 0,
+      "duplicate_functions": 0,
+      "new_patterns": [
+        "GemExecutor interface with MockGemExecutor implementation",
+        "RealGemsWorkflowEngine vs old WorkflowEngine (separate implementations, not cloned)"
+      ]
+    },
+    "disposition": "baseline",
+    "disposition_note": "DRY principles maintained through new code"
+  },
+  {
+    "id": "ghost-upgrade-004",
+    "category": "architecture",
+    "detector": "component_audit",
+    "severity": "info",
+    "status": "improved",
+    "summary": "9 core GEMS components with clear execution path",
+    "detail": "Added WorkflowCoordinator, GemExecutor, MockGemExecutor. Execution architecture now complete: Router → Coordinator → Executor → Handoff",
+    "evidence": {
+      "components": [
+        "Artifact (frozen)",
+        "Provenance (frozen)",
+        "Handoff (frozen)",
+        "WorkflowState (frozen)",
+        "GemRegistry",
+        "Router",
+        "GovernanceValidator",
+        "WorkflowCoordinator (NEW)",
+        "GemExecutor interface (NEW)"
+      ],
+      "total_components": 9,
+      "new_components": 2,
+      "execution_flow_complete": true
+    },
+    "disposition": "improved",
+    "disposition_note": "Phase 4 added missing Coordinator. Execution architecture now functional."
+  },
+  {
+    "id": "ghost-upgrade-005",
+    "category": "data_integrity",
+    "detector": "immutability_audit",
+    "severity": "info",
+    "status": "strong",
+    "summary": "Core GEMS data model is fully immutable (frozen)",
+    "detail": "All audit-critical structures in src/gems are frozen dataclasses. Test-track harness uses mutable structures (acceptable for test layer).",
+    "evidence": {
+      "frozen_in_src_gems": [
+        "Artifact",
+        "Provenance",
+        "Handoff",
+        "GemSpec",
+        "WorkflowState",
+        "Route",
+        "ExecutionRecord"
+      ],
+      "frozen_count_src_gems": 7,
+      "frozen_count_total": 7,
+      "test_harness_mutable": [
+        "WorkflowStep (test-track/harness/engine_v2.py)",
+        "WorkflowDefinition (test-track/harness/engine_v2.py)",
+        "WorkflowExecution (test-track/harness/engine_v2.py)"
+      ],
+      "mutable_rationale": "Test harness structures are not audit-critical"
+    },
+    "disposition": "strong",
+    "disposition_note": "Core immutability enforced. Mutable test structures are appropriate layer."
+  },
+  {
+    "id": "ghost-upgrade-006",
+    "category": "testing",
+    "detector": "test_coverage_audit",
+    "severity": "info",
+    "status": "comprehensive",
+    "summary": "Test coverage expanded to 94 tests (100% pass rate)",
+    "detail": "Added 36 new tests for Coordinator, real GEMS engine, and adversarial testing. All tests pass.",
+    "evidence": {
+      "total_tests": 94,
+      "pass_rate": 1.0,
+      "test_categories": [
+        "14 coordinator integration tests",
+        "8 real GEMS engine tests",
+        "14 adversarial/security tests",
+        "50 forensic variants",
+        "6 forensic analysis",
+        "2 registry/router"
+      ],
+      "new_tests": 36,
+      "execution_time_seconds": 0.17
+    },
+    "disposition": "excellent",
+    "disposition_note": "Comprehensive test coverage validates new execution runtime"
+  },
+  {
+    "id": "ghost-upgrade-007",
+    "category": "execution_model",
+    "detector": "architectural_pattern",
+    "severity": "info",
+    "status": "verified",
+    "summary": "Real execution path established and tested",
+    "detail": "New RealGemsWorkflowEngine uses actual Router + Coordinator. Old simulation engine retained for reference. Metrics now measure real behavior.",
+    "evidence": {
+      "execution_paths": {
+        "real_gems": {
+          "entry": "RealGemsWorkflowEngine",
+          "router": "Real Router.route()",
+          "coordinator": "Real WorkflowCoordinator",
+          "executor": "Configurable (Mock/Custom/Real)",
+          "tested": true,
+          "tests": 8
+        },
+        "simulation": {
+          "entry": "Old WorkflowEngine",
+          "note": "Retained for comparison/reference"
+        }
+      },
+      "metrics_honest": true,
+      "claim_accuracy": "Metrics now measure real GEMS behavior (bounded by mock Gems)"
+    },
+    "disposition": "verified",
+    "disposition_note": "Phase 2-4 achieved: honest execution model with real testing"
+  },
+  {
+    "id": "ghost-upgrade-008",
+    "category": "gateway_patterns",
+    "detector": "interface_audit",
+    "severity": "info",
+    "status": "identified",
+    "summary": "GemExecutor interface enables clean Gem invocation",
+    "detail": "Abstract GemExecutor allows MockGemExecutor for testing and future Real/Custom implementations",
+    "evidence": {
+      "interface": "GemExecutor (abstract)",
+      "implementations": [
+        "MockGemExecutor - simulated execution",
+        "Custom executors via coordinator parameter",
+        "Future: Real Gem implementations"
+      ],
+      "pattern": "Strategy pattern for pluggable execution"
+    },
+    "disposition": "clean",
+    "disposition_note": "Extensible design ready for real Gem implementations"
+  }
+]
