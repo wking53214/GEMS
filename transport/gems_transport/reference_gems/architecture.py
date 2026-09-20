@@ -4,22 +4,19 @@ from __future__ import annotations
 
 from conservation_kernel import AuthorityStatus, CanonicalState, EpistemicStatus, OriginStatus, Uncertainty, UncertaintyState
 
-from ..contracts import GemIdentity, TransformationProposal, TransformationRequest, utc_now
-from .base import BaseGem
+from ..contracts import TransformationProposal, TransformationRequest, utc_now
+from .base import BaseGem, create_gem_identity
 
 
 class ArchitectureGem(BaseGem):
     def __init__(self, *, evidence_ref: str = "ev-source", gem_id: str = "architecture", version: str = "0.1", clock=None) -> None:
-        super().__init__(
-            GemIdentity(
-                gem_id=gem_id,
-                gem_version=version,
-                implementation_id="gems.reference.architecture.v0.1",
-                role="architecture",
-                capabilities=("architecture-mapping", "functional-proposal"),
-            ),
-            clock=clock or utc_now,
+        identity = create_gem_identity(
+            gem_id=gem_id,
+            version=version,
+            role="architecture",
+            capabilities=("architecture-mapping", "functional-proposal"),
         )
+        super().__init__(identity, clock=clock or utc_now)
         self.evidence_ref = evidence_ref
 
     def transform(self, request: TransformationRequest) -> TransformationProposal:

@@ -4,22 +4,19 @@ from __future__ import annotations
 
 from conservation_kernel import AuthorityStatus, CanonicalState, EpistemicStatus, OriginStatus, Uncertainty, UncertaintyState
 
-from ..contracts import GemIdentity, TransformationProposal, TransformationRequest, utc_now
-from .base import BaseGem
+from ..contracts import TransformationProposal, TransformationRequest, utc_now
+from .base import BaseGem, create_gem_identity
 
 
 class RequirementsGem(BaseGem):
     def __init__(self, *, evidence_ref: str = "ev-source", gem_id: str = "requirements", version: str = "0.1", clock=None) -> None:
-        super().__init__(
-            GemIdentity(
-                gem_id=gem_id,
-                gem_version=version,
-                implementation_id="gems.reference.requirements.v0.1",
-                role="requirements",
-                capabilities=("requirement-extraction", "source-lineage"),
-            ),
-            clock=clock or utc_now,
+        identity = create_gem_identity(
+            gem_id=gem_id,
+            version=version,
+            role="requirements",
+            capabilities=("requirement-extraction", "source-lineage"),
         )
+        super().__init__(identity, clock=clock or utc_now)
         self.evidence_ref = evidence_ref
 
     def transform(self, request: TransformationRequest) -> TransformationProposal:

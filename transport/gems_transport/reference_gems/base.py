@@ -27,6 +27,22 @@ from ..contracts import (
 )
 
 
+def create_gem_identity(
+    gem_id: str,
+    version: str,
+    role: str,
+    capabilities: tuple[str, ...],
+) -> GemIdentity:
+    """Factory for creating consistent GemIdentity objects for reference Gems."""
+    return GemIdentity(
+        gem_id=gem_id,
+        gem_version=version,
+        implementation_id=f"gems.reference.{gem_id}.v{version}",
+        role=role,
+        capabilities=capabilities,
+    )
+
+
 class BaseGem:
     """Reference implementation base class.
 

@@ -4,22 +4,19 @@ from __future__ import annotations
 
 from conservation_kernel import AuthorityStatus, CanonicalState, EpistemicStatus, OriginStatus, Uncertainty, UncertaintyState
 
-from ..contracts import GemIdentity, TransformationProposal, TransformationRequest, utc_now
-from .base import BaseGem
+from ..contracts import TransformationProposal, TransformationRequest, utc_now
+from .base import BaseGem, create_gem_identity
 
 
 class ResearcherGem(BaseGem):
     def __init__(self, *, evidence_ref: str = "ev-source", gem_id: str = "researcher", version: str = "0.1", clock=None) -> None:
-        super().__init__(
-            GemIdentity(
-                gem_id=gem_id,
-                gem_version=version,
-                implementation_id="gems.reference.researcher.v0.1",
-                role="researcher",
-                capabilities=("derived-inference", "evidence-reference"),
-            ),
-            clock=clock or utc_now,
+        identity = create_gem_identity(
+            gem_id=gem_id,
+            version=version,
+            role="researcher",
+            capabilities=("derived-inference", "evidence-reference"),
         )
+        super().__init__(identity, clock=clock or utc_now)
         self.evidence_ref = evidence_ref
 
     def transform(self, request: TransformationRequest) -> TransformationProposal:
