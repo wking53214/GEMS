@@ -787,23 +787,21 @@ def test_49_complex_multi_team_workflow():
     assert len(team_contributions) == 4
 
 
-def test_50_forensic_system_comprehensive_validation():
-    """Variant 50: Comprehensive validation of entire forensic system."""
-    # Create complex workflow
+def _setup_registry_for_comprehensive():
+    """Setup registry with research specialists."""
     registry = GemRegistry()
     specialists = [
         ("Researcher", "research", ("research", "literature")),
         ("Analyst", "analysis", ("analysis", "statistics")),
         ("Validator", "validation", ("validation", "verification")),
     ]
-
     for name, purpose, capabilities in specialists:
         registry.register(GemSpec(name, purpose, capabilities))
+    return registry
 
-    router = Router(registry)
-    validator = GovernanceValidator()
 
-    # Build workflow with full provenance
+def _build_workflow_artifacts():
+    """Build artifacts for comprehensive validation workflow."""
     baseline = Artifact(
         content="research_question",
         provenance=Provenance(
@@ -813,7 +811,6 @@ def test_50_forensic_system_comprehensive_validation():
             authority=Authority.OBSERVATION,
         ),
     )
-
     analysis = Artifact(
         content="statistical_results",
         provenance=Provenance(
@@ -824,7 +821,6 @@ def test_50_forensic_system_comprehensive_validation():
             parent_ids=(baseline.artifact_id,),
         ),
     )
-
     validation = Artifact(
         content="verified_results",
         provenance=Provenance(
@@ -835,6 +831,13 @@ def test_50_forensic_system_comprehensive_validation():
             parent_ids=(analysis.artifact_id,),
         ),
     )
+    return baseline, analysis, validation
+
+
+def test_50_forensic_system_comprehensive_validation():
+    """Variant 50: Comprehensive validation of entire forensic system."""
+    registry = _setup_registry_for_comprehensive()
+    baseline, analysis, validation = _build_workflow_artifacts()
 
     handoffs = [
         Handoff(
@@ -858,23 +861,20 @@ def test_50_forensic_system_comprehensive_validation():
     ]
 
     state = WorkflowState(baseline=(baseline,), history=handoffs, status=WorkflowStatus.COMPLETED)
+    router = Router(registry)
+    validator = GovernanceValidator()
 
-    # Validate complete chain
     assert len(state.history) == 3
     assert state.status == WorkflowStatus.COMPLETED
     assert state.history[0].sender == "Researcher"
     assert state.history[-1].sender == "Validator"
     assert validation.provenance.parent_ids[0] == analysis.artifact_id
-
-    # All specialists available
     assert len(registry.list()) == 3
 
-    # Routing works
     for capability in ["research", "analysis", "validation"]:
         route = router.route(capability)
         assert route is not None
 
-    # Governance validates
     validator.validate_artifact(baseline)
     validator.validate_artifact(analysis)
     validator.validate_artifact(validation)

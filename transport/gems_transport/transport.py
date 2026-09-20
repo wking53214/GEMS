@@ -230,9 +230,36 @@ class ConservationGateway:
         self.ledger.record_result(result)
         return result
 
+    def _check_disallowed_unverifiable(self, verification, request, proposal):
+        """Check for disallowed unverifiable properties."""
+        disallowed = tuple(
+            item for item in verification.unverifiable_properties
+            if item not in ALLOWED_UNVERIFIABLE_PROPERTIES
+        )
+        if verification.accepted and disallowed:
+            rejections = tuple(
+                Rejection(
+                    code="UNVERIFIABLE_REQUIRED_PROPERTY",
+                    detail=f"kernel could not verify required property {item}",
+                    dimension="PROVENANCE",
+                )
+                for item in disallowed
+            )
+            decision = ConservationDecision(
+                DecisionStatus.REQUIRES_VERIFICATION,
+                verification.status.value,
+                rejections,
+            )
+            return self._result(
+                request, proposal,
+                decision=decision,
+                state=TransportState.REJECTED,
+                kernel_result=verification,
+            )
+        return None
+
     def submit(self, request: TransformationRequest, proposal: TransformationProposal) -> TransformationResult:
         """Validate a proposal and expose its output only if accepted."""
-
         preflight = self._preflight(request, proposal)
         if preflight:
             decision = ConservationDecision(DecisionStatus.REJECTED, None, preflight)
@@ -245,35 +272,12 @@ class ConservationGateway:
             proposal.record.kernel_record,
             self.registry,
         )
-        disallowed_unknown = tuple(
-            item for item in verification.unverifiable_properties
-            if item not in ALLOWED_UNVERIFIABLE_PROPERTIES
-        )
-        if verification.accepted and disallowed_unknown:
-            rejections = tuple(
-                Rejection(
-                    code="UNVERIFIABLE_REQUIRED_PROPERTY",
-                    detail=f"kernel could not verify required property {item}",
-                    dimension="PROVENANCE",
-                )
-                for item in disallowed_unknown
-            )
-            decision = ConservationDecision(
-                DecisionStatus.REQUIRES_VERIFICATION,
-                verification.status.value,
-                rejections,
-            )
-            return self._result(
-                request,
-                proposal,
-                decision=decision,
-                state=TransportState.REJECTED,
-                kernel_result=verification,
-            )
+
+        rejection = self._check_disallowed_unverifiable(verification, request, proposal)
+        if rejection:
+            return rejection
 
         if not verification.accepted:
-            # Submit rejected proposals through the kernel façade so its own
-            # rejection report remains part of the authoritative kernel state.
             kernel_result = self.kernel.submit(
                 source,
                 proposal.output_artifact,

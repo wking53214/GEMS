@@ -81,11 +81,8 @@ class AdversarialGem(BaseGem):
         except KeyError as exc:
             raise KeyError(f"hostile fixture requires proposition {proposition_id}") from exc
 
-    def _mutated(self, request: TransformationRequest, attack: AttackType) -> Artifact:
-        source = request.input_artifact
-        propositions = list(source.propositions)
-        by_id = source.proposition_map()
-
+    def _apply_attack(self, propositions: list, source: Artifact, attack: AttackType) -> tuple[list, Artifact | None]:
+        """Apply attack-specific mutations to propositions. Returns (propositions, early_return_artifact)."""
         if attack is AttackType.UNKNOWN_TO_FACT:
             old = self._find(source, "p-unknown")
             propositions[propositions.index(old)] = replace(
@@ -119,7 +116,7 @@ class AdversarialGem(BaseGem):
             old = self._find(source, "p-human-fact")
             propositions[propositions.index(old)] = replace(old, source_refs=("forged-source",))
         elif attack is AttackType.FALSE_LINEAGE:
-            return Artifact(
+            return propositions, Artifact(
                 artifact_id=f"{source.artifact_id}:attack-{attack.value}",
                 content=f"Hostile false lineage for {source.content}",
                 propositions=tuple(propositions),
@@ -127,7 +124,7 @@ class AdversarialGem(BaseGem):
                 parent_artifact_ids=("forged-parent",),
                 version=source.version + 1,
                 functional_contract=source.functional_contract,
-                created_at=request.created_at,
+                created_at=self._clock(),
             )
         elif attack is AttackType.UNCERTAINTY_DELETION:
             old = self._find(source, "p-estimate")
@@ -205,7 +202,14 @@ class AdversarialGem(BaseGem):
             pass
         else:  # pragma: no cover - enum exhaustiveness guard
             raise AssertionError(f"unhandled attack {attack}")
+        return propositions, None
 
+    def _mutated(self, request: TransformationRequest, attack: AttackType) -> Artifact:
+        source = request.input_artifact
+        propositions = list(source.propositions)
+        propositions, early_return = self._apply_attack(propositions, source, attack)
+        if early_return:
+            return early_return
         return Artifact(
             artifact_id=f"{source.artifact_id}:attack-{attack.value}",
             content=f"Hostile {attack.value}: {source.content}",
