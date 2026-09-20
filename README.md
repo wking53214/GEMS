@@ -13,7 +13,6 @@ Recovered as strong/explicit evidence:
 - provenance and epistemic-status preservation
 - TIE as a foundational evidence-preserving source / "Gem Layer 1"
 - Cognitive Continuity constraints, including human sovereignty and no silent AI→human authority conversion
-- Triad+42 as a conceptual review/challenge mechanism
 
 Not recovered from the supplied package:
 - historical canonical repository tree
@@ -32,7 +31,6 @@ src/gems/
   core/            registry, router, workflow coordinator, handoff
   governance/      human authority and validation boundaries
   integrations/    TIE package adapter
-  cognition/       Triad+42 review mechanisms
 schemas/           machine-readable baseline schemas
 prompts/           recovered/preserved prompt references
 ```

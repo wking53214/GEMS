@@ -7,7 +7,6 @@
 - workflow coordination
 - governed handoffs
 - TIE adapter
-- Triad+42 review interfaces
 - tests
 
 ## Phase 1 — evidence integration
