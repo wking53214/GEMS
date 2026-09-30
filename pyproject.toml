@@ -19,6 +19,12 @@ dev = ["pytest>=8"]
 transport = [
     "conservation-kernel",  # For transport.gems_transport and forensic integrity verification
 ]
+# Optional: lets GEMS's verdicts be expressed as CNS gate results. GEMS imports
+# nothing from CNS unless gems.cns_connector or gems_transport.cns_connector is
+# used. Pinned to tag v1.4.0.
+cns = [
+    "cns @ git+https://github.com/wking53214/cns.git@3b465dbcc1a6a4ab6f1040f93d44483196abd737",
+]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
