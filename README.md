@@ -49,4 +49,4 @@ TIE  --raises missing--
 
 **Safe to archive for live path** if the hub extra is dropped or re-pinned to a reconstructed adapter.
 
-Proprietary. Copyright (c) 2026 William King. All rights reserved. See LICENSE. Evidence boundary in this README is the contract; `docs/` overclaims.
+Proprietary. Copyright (c) 2026 William N. King. All rights reserved. See LICENSE. Evidence boundary in this README is the contract; `docs/` overclaims.
