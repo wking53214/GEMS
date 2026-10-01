@@ -8,7 +8,7 @@ version = "0.1.0"
 description = "Evidence-preserving multi-Gem orchestration baseline reconstructed from the GEMS-FER-1.0 forensic package"
 readme = "README.md"
 requires-python = ">=3.11"
-license = { text = "Apache-2.0" }
+license = { text = "Proprietary" }
 authors = [{ name = "William King" }]
 dependencies = [
     "conservation-kernel",  # Required for transport layer and forensic verification

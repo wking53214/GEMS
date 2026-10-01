@@ -32,7 +32,7 @@ the two have been reconciled.
 - Absolute imports in `experiments/` updated to the new package names.
   All in-package imports were already relative and are unchanged.
 - The bundled `pyproject.toml` and MIT `LICENSE` were **dropped**. This repo
-  is Apache-2.0 (root `LICENSE`) and has one `pyproject.toml` at the root.
+  is proprietary (root `LICENSE`) and has one `pyproject.toml` at the root.
 - Generated `experiments/results/*.json` is git-ignored.
 
 No logic in `gems_transport/` or `experiments/` was modified.
