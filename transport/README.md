@@ -35,6 +35,7 @@ gems_transport/
   registry.py        GemRegistry allow-list, append-only TransformationLedger
   artifact.py        re-exports the kernel Artifact model + lineage refs
   tie_adapter.py     TIE integration point (raises TIEIntegrationMissing)
+  cns_connector.py   optional: gateway verdicts as CNS gate results (root README, section 8)
   reference_gems/    BaseGem + researcher/reviewer/summarizer/requirements/
                      architecture + AdversarialGem
 experiments/
