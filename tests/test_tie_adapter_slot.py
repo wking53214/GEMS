@@ -28,7 +28,7 @@ def test_the_readmes_no_longer_say_tie_is_absent():
     root = TRANSPORT.parent
     for name in ("README.md", "transport/README.md"):
         text = (root / name).read_text()
-        assert "no adapter" in text and "TIE is its own repo" in text, name
+        assert "TIE is its own repo" in text and "TIE is MISSING" not in text, name
 
 
 def test_requiring_an_adapter_still_fails_closed_with_that_message():
