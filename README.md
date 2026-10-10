@@ -15,7 +15,7 @@ Executable **reconstruction baseline** from the GEMS-FER-1.0 forensic package. M
 - `WorkflowCoordinator` default `MockGemExecutor`: `content = f"{gem_name} processed: {input_artifact.content}"`, `quality_score=0.85`
 - `GovernanceValidator`: provenance required; epistemic in enum. Does **not** block AI claiming `HUMAN_AUTHORIZATION` at construction
 - `default_catalog.py`: 15 named GemSpecs — **strings only, no prompts, no implementations**
-- `cognition/` and `integrations/` **empty**. the TIE adapter slot in `transport/` raises `TIEIntegrationMissing` (TIE is its own repo; no adapter converting its handoffs to kernel Artifacts exists yet)
+- `cognition/` and `integrations/` **empty**. `transport/` has a TIE source adapter, `TIEPackageSource`, that turns a TIE package into a kernel Artifact for `ingest_source` (TIE is its own repo); the older `require_tie_adapter` slot still raises `TIEIntegrationMissing`
 
 Enums: `EpistemicStatus{explicit,inferred,unknown,conflicted}`, `Origin{human,ai,joint,uncertain}`, `Authority{observation,analysis,proposal,human_authorization}`. Several members reserved/tests-only.
 
