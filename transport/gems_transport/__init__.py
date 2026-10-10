@@ -24,6 +24,7 @@ from .contracts import (
 from .pipeline import Pipeline, PipelineRun
 from .registry import GemRegistry, LedgerEntry, TransformationLedger
 from .tie_adapter import TIEArtifactSource, TIEIntegrationMissing, require_tie_adapter
+from .tie_package_source import TIEMappingError, TIEPackageSource
 from .transport import ConservationGateway, GatewayReconstruction
 
 __all__ = [
@@ -47,6 +48,8 @@ __all__ = [
     "Rejection",
     "TIEArtifactSource",
     "TIEIntegrationMissing",
+    "TIEMappingError",
+    "TIEPackageSource",
     "TransformationLedger",
     "TransformationProposal",
     "TransformationRecord",
