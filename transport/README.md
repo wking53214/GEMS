@@ -34,7 +34,7 @@ gems_transport/
   contracts.py       GEMS/0.1 wire contracts (proposal/record/decision/result)
   registry.py        GemRegistry allow-list, append-only TransformationLedger
   artifact.py        re-exports the kernel Artifact model + lineage refs
-  tie_adapter.py     TIE integration point (raises TIEIntegrationMissing)
+  tie_adapter.py     TIE adapter slot: interface only, raises TIEIntegrationMissing (TIE is its own repo; no converter yet)
   cns_connector.py   optional: gateway verdicts as CNS gate results (root README, section 8)
   reference_gems/    BaseGem + researcher/reviewer/summarizer/requirements/
                      architecture + AdversarialGem
