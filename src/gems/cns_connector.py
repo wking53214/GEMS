@@ -49,11 +49,11 @@ connector pass what the GEMS rules refuse).
 
 What a ``PASS`` means
 ---------------------
-Only that provenance is present and the epistemic status is a known value,
-which is all ``GovernanceValidator`` checks. It does not look at ``origin`` or
-``authority``, so an AI-origin artifact that claims ``HUMAN_AUTHORIZATION``
-passes it (the root README says so). A ``PASS`` from this gate is not evidence
-that anyone authorized anything.
+Provenance is present, the epistemic status is a known value, and the artifact
+is not an AI-origin artifact claiming ``HUMAN_AUTHORIZATION``. That is what
+``GovernanceValidator`` checks. A ``PASS`` from this gate still does not prove
+that a human authorized anything: it only shows the artifact did not claim
+authority it cannot hold.
 
 What a verdict is bound to
 --------------------------
