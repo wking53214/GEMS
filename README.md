@@ -13,7 +13,7 @@ Executable **reconstruction baseline** from the GEMS-FER-1.0 forensic package. M
 - Frozen: `Provenance`, `Artifact`, `Handoff`, `GemSpec`, `WorkflowState` (frozen dataclass with **mutable** `history: list` — tests append)
 - `Router.route(capability)`: all gems with the cap, **sort by name, take [0]** (deterministic, content-free)
 - `WorkflowCoordinator` default `MockGemExecutor`: `content = f"{gem_name} processed: {input_artifact.content}"`, `quality_score=0.85`
-- `GovernanceValidator`: provenance required; epistemic in enum. Does **not** block AI claiming `HUMAN_AUTHORIZATION` at construction
+- `GovernanceValidator`: provenance required; epistemic in enum; refuses an AI-origin artifact claiming `HUMAN_AUTHORIZATION`
 - `default_catalog.py`: 15 named GemSpecs — **strings only, no prompts, no implementations**
 - `cognition/` and `integrations/` **empty**. `transport/` has a TIE source adapter, `TIEPackageSource`, that turns a TIE package into a kernel Artifact for `ingest_source` (TIE is its own repo); the older `require_tie_adapter` slot still raises `TIEIntegrationMissing`
 
@@ -89,7 +89,7 @@ resolve([alpha, omega])
 
 | GEMS | CNS |
 |---|---|
-| `validate_artifact` returns | `PASS` at `OMEGA`. The position is a judgment call GEMS does not settle: nothing in `src/gems` calls the validator at all (only tests do). It is placed at `OMEGA` because it judges the provenance record an artifact carries, but an artifact handed to a Gem could equally be judged on the way in. The verdict is narrow: provenance is present and the epistemic status is a known value, nothing about `origin` or `authority`, so an AI artifact claiming `HUMAN_AUTHORIZATION` still passes. It is not evidence that anyone authorized anything. |
+| `validate_artifact` returns | `PASS` at `OMEGA`. The position is a judgment call GEMS does not settle: nothing in `src/gems` calls the validator at all (only tests do). It is placed at `OMEGA` because it judges the provenance record an artifact carries, but an artifact handed to a Gem could equally be judged on the way in. The verdict is narrow: provenance is present, the epistemic status is a known value, and an AI-origin artifact claiming `HUMAN_AUTHORIZATION` is refused. A `PASS` is still not evidence that anyone authorized anything. |
 | `validate_artifact` raises `ValueError` | `TERMINAL_BREACH`; the reason is the validator's message. GEMS models no repair. Any other exception is not a verdict and propagates. |
 | gateway input gate, `is_accepted(artifact)` (`Pipeline` refuses before the Gem runs) | `PASS` or `TERMINAL_BREACH` at `ALPHA`, reason `INPUT_GATE_REQUIRED` on refusal |
 | `submit` decision `ACCEPTED` | `PASS` at `OMEGA`, only if the state is `ACCEPTED` and an accepted artifact exists |
