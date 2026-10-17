@@ -314,3 +314,137 @@ def test_a_real_tie_package_with_a_declared_gap_arrives_with_the_gap():
     assert props["ev-1"].origin is OriginStatus.MACHINE_ORIGINATED
     assert any("not inspected" in text for text in gap_texts(artifact))
     ConservationGateway().ingest_source(artifact)
+
+
+# Lineage: the TIE package digest ------------------------------------------
+
+DIGEST = "ab" * 32
+OTHER_DIGEST = "cd" * 32
+# artifact_digest of the package in `lineage_package()` loaded with no tie_digest,
+# recorded before the option existed. If it changes, an artifact without a
+# digest is no longer byte-identical to what it was.
+NO_DIGEST_GOLDEN = "b65cacef8a18c144a7d6e3476c79f256355488215e297559467ae2b0d1b9cf88"
+
+
+def lineage_package():
+    return package([ev("e1"), ev("e2", "INFERRED", "AI", segment="s7")], known=("x",))
+
+
+def test_the_tie_digest_is_carried_on_every_proposition_and_in_the_header():
+    artifact = load(lineage_package(), tie_digest=DIGEST)
+    assert {p.metadata["tie_package_digest"] for p in artifact.propositions} == {DIGEST}
+    assert any(p.metadata["tie_kind"] == "gap" for p in artifact.propositions)
+    assert artifact.content.splitlines()[0] == (
+        f"TIE package p1 from source src-1 (CNS digest {DIGEST})."
+    )
+    assert load(lineage_package(), tie_digest=DIGEST).artifact_digest == artifact.artifact_digest
+
+
+def test_the_tie_digest_is_part_of_the_artifact_digest():
+    plain = load(lineage_package())
+    assert load(lineage_package(), tie_digest=DIGEST).artifact_digest != plain.artifact_digest
+    assert (
+        load(lineage_package(), tie_digest=DIGEST).artifact_digest
+        != load(lineage_package(), tie_digest=OTHER_DIGEST).artifact_digest
+    )
+
+
+def test_a_package_that_yields_no_propositions_still_carries_the_digest():
+    pkg = package([], segments=[seg("INSPECTED")])
+    artifact = load(pkg, tie_digest=DIGEST)
+    assert artifact.propositions == ()
+    assert DIGEST in artifact.content
+
+
+@pytest.mark.parametrize(
+    "bad",
+    [
+        "",
+        "ab" * 31,
+        "ab" * 33,
+        "AB" * 32,
+        "ab" * 31 + "xy",
+        f" {DIGEST}",
+        f"{DIGEST}\n",
+        f"sha256:{DIGEST}",
+        DIGEST[:16],
+        bytes.fromhex(DIGEST),
+        123,
+    ],
+)
+def test_a_tie_digest_that_is_not_a_full_sha256_hex_is_refused_not_normalised(bad):
+    with pytest.raises(TIEMappingError):
+        TIEPackageSource(lineage_package(), created_at=NOW, tie_digest=bad)
+
+
+def test_an_artifact_without_a_tie_digest_is_byte_identical_to_before():
+    artifact = load(lineage_package())
+    assert artifact.artifact_digest == NO_DIGEST_GOLDEN
+    assert load(lineage_package(), tie_digest=None).to_json() == artifact.to_json()
+    assert "tie_package_digest" not in artifact.to_json()
+    assert "CNS digest" not in artifact.content
+
+
+def test_the_carried_digest_cannot_be_swapped_without_breaking_the_artifact_digest():
+    from conservation_kernel.errors import InvalidArtifact
+
+    data = load(lineage_package(), tie_digest=DIGEST).to_dict()
+    data["propositions"][0]["metadata"]["tie_package_digest"] = OTHER_DIGEST
+    with pytest.raises(InvalidArtifact):
+        type(load(lineage_package())).from_dict(data)
+
+
+def test_a_real_tie_package_digested_by_the_tie_connector_reaches_the_artifact_unchanged():
+    """TIE, CNS and GEMS together: the digest a CNS verdict is bound to is the
+    digest the artifact carries, and changing the package breaks the match."""
+    import dataclasses
+
+    pytest.importorskip("tie", reason="TIE not installed")
+    gate = pytest.importorskip("cns.gate", reason="cns not installed")
+    from tie.cns_connector import PACKAGE_SUBJECT, binds, package_digest
+    from tie.coverage.segmenter import segment_source
+    from tie.evidence.extract import evidence_from_statement
+    from tie.models import EpistemicStatus as TieStatus
+    from tie.models import OriginKind, Provenance, SourceRecord
+    from tie.package.builder import build_package
+
+    source = SourceRecord(
+        source_id="real-2",
+        content="A" * 300,
+        provenance=Provenance(origin=OriginKind.HUMAN),
+    )
+    coverage = segment_source(source, max_chars=100, not_inspected=[(100, 200)])
+    evidence = [
+        evidence_from_statement(
+            source,
+            evidence_id="ev-1",
+            statement="the call was escalated",
+            epistemic_status=TieStatus.EXPLICIT,
+            segment_id=coverage.segments[0].segment_id,
+        )
+    ]
+    pkg = build_package(package_id="real-pkg-2", source=source, coverage=coverage, evidence=evidence)
+
+    digest = package_digest(pkg)
+    assert len(digest) == 64
+    verdict = gate.GateResult(
+        gate="other.repo.gate",
+        position=gate.GatePosition.OMEGA,
+        outcome=gate.GateOutcome.PASS,
+        reason="r",
+        subject=PACKAGE_SUBJECT,
+        subject_digest=digest,
+    )
+    assert binds(verdict, pkg)
+
+    artifact = TIEPackageSource(pkg, created_at=NOW, tie_digest=digest).load_artifact()
+    carried = {p.metadata["tie_package_digest"] for p in artifact.propositions}
+    assert carried == {digest} == {verdict.subject_digest}
+    ConservationGateway().ingest_source(artifact)
+
+    tampered = dataclasses.replace(
+        pkg,
+        evidence=(dataclasses.replace(pkg.evidence[0], statement="the call was not escalated"),),
+    )
+    assert not binds(verdict, tampered)
+    assert package_digest(tampered) != carried.pop()

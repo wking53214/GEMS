@@ -44,10 +44,26 @@ Anything it cannot map raises ``TIEMappingError``; nothing is guessed.
 
 ``created_at`` is required. The kernel puts it in the artifact digest, so a
 clock reading would make ingesting the same package twice a digest conflict.
+
+Lineage
+-------
+``tie_digest`` is optional: the full 64-hex SHA-256 that names the package in
+TIE's CNS connector (``tie.cns_connector.package_digest``), passed in as a
+plain string. GEMS cannot recompute it, because that needs TIE and CNS, so it
+records the string it was given and does not vouch that it matches the
+package; whoever holds both checks that. It is recorded in two slots the
+kernel already hashes: ``metadata["tie_package_digest"]`` on every proposition
+(a change to a proposition's metadata is observed by the kernel as a
+provenance change, so a transformation cannot drop it unnoticed) and the
+header line of ``content`` (so an artifact with no propositions still carries
+it). The artifact has no other lineage slot: ``parent_artifact_ids`` names
+kernel artifacts, and a root source must have none. Without ``tie_digest`` the
+artifact is byte-identical to what it was before this option existed.
 """
 
 from __future__ import annotations
 
+import re
 from collections.abc import Sequence
 from typing import Any
 
@@ -71,6 +87,8 @@ _EPISTEMIC = {
     "UNKNOWN": EpistemicStatus.UNKNOWN,
     "CONFLICTED": EpistemicStatus.CONFLICTED,
 }
+
+_TIE_DIGEST = re.compile(r"[0-9a-f]{64}")
 
 _GAP_LABELS = {
     "NOT_INSPECTED": "not inspected",
@@ -97,14 +115,20 @@ class TIEPackageSource:
         *,
         created_at: str,
         authorization_refs: Sequence[str] = (),
+        tie_digest: str | None = None,
     ) -> None:
         if not isinstance(created_at, str) or not created_at.strip():
             raise TIEMappingError("created_at must be a non-empty timestamp string")
+        if tie_digest is not None and (
+            not isinstance(tie_digest, str) or not _TIE_DIGEST.fullmatch(tie_digest)
+        ):
+            raise TIEMappingError("tie_digest must be a full 64-character lowercase hex SHA-256")
         if getattr(package, "typed_handoff", None) is None:
             raise TIEMappingError("the package has no typed handoff")
         self._package = package
         self._created_at = created_at
         self._authorization_refs = tuple(authorization_refs)
+        self._tie_digest = tie_digest
 
     def load_artifact(self) -> Artifact:
         package = self._package
@@ -123,11 +147,14 @@ class TIEPackageSource:
                     origin=OriginStatus.MACHINE_ORIGINATED,
                     uncertainty=Uncertainty(UncertaintyState.UNKNOWN, gap),
                     source_refs=(source_id,),
-                    metadata={"tie_kind": "gap"},
+                    metadata=self._lineage({"tie_kind": "gap"}),
                 )
             )
 
-        lines = [f"TIE package {package.package_id} from source {source_id}."]
+        header = f"TIE package {package.package_id} from source {source_id}"
+        if self._tie_digest is not None:
+            header += f" (CNS digest {self._tie_digest})"
+        lines = [f"{header}."]
         lines += [f"[{_value(e.epistemic_status)}] {e.statement}" for e in evidence]
         lines += [f"Not known: {gap}" for gap in gaps]
 
@@ -167,13 +194,20 @@ class TIEPackageSource:
             uncertainty=Uncertainty(state, reason),
             authorization_refs=auth,
             source_refs=(f"{source_id}#{segment}" if segment else source_id,),
-            metadata={
-                "tie_kind": "evidence",
-                "tie_epistemic_status": status,
-                "tie_origin": origin_name,
-                "tie_segment_id": segment,
-            },
+            metadata=self._lineage(
+                {
+                    "tie_kind": "evidence",
+                    "tie_epistemic_status": status,
+                    "tie_origin": origin_name,
+                    "tie_segment_id": segment,
+                }
+            ),
         )
+
+    def _lineage(self, metadata: dict[str, Any]) -> dict[str, Any]:
+        if self._tie_digest is not None:
+            metadata["tie_package_digest"] = self._tie_digest
+        return metadata
 
     def _origin(self, evidence_id: str, name: str):
         if name == "HUMAN":
