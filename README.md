@@ -57,7 +57,7 @@ is present, two connectors express GEMS's verdicts as CNS gate results so they
 can be resolved alongside gates from other repositories. Native verdicts and
 behavior are unchanged.
 
-The extra pins CNS v1.4.0 by commit. Neither `gems-infrastructure` nor its
+The extra pins CNS v1.9.0 by tag. Neither `gems-infrastructure` nor its
 existing dependency `conservation-kernel` is on a package index, so as things
 stand install the kernel from its own repository first and then this repo from a
 checkout with the extra:
