@@ -25,7 +25,7 @@ CONNECTORS = (
     ROOT / "src" / "gems" / "cns_connector.py",
     ROOT / "transport" / "gems_transport" / "cns_connector.py",
 )
-PINNED_SHA = "da9ab8c8c47097b38ad9792dec23fed45d31ae3f"
+PINNED_SHA = "v1.9.0"
 
 BLOCK = "import sys; sys.modules['cns'] = None; sys.modules['cns.gate'] = None\n"
 
@@ -313,5 +313,5 @@ def test_the_package_declares_no_cns_runtime_dependency():
     assert not any(dep.lower().replace("_", "-").startswith("cns") for dep in runtime)
     extra = data["project"]["optional-dependencies"]["cns"]
     assert len(extra) == 1
-    assert extra[0].startswith("cns @ git+https://github.com/wking53214/cns.git@")
+    assert extra[0].startswith("cns @ git+https://github.com/wking53214/CNS.git@")
     assert extra[0].endswith(PINNED_SHA)
