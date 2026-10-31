@@ -25,7 +25,7 @@ CONNECTORS = (
     ROOT / "src" / "gems" / "cns_connector.py",
     ROOT / "transport" / "gems_transport" / "cns_connector.py",
 )
-PINNED_SHA = "v1.9.0"
+PINNED_SHA = "v2.3.0"
 
 BLOCK = "import sys; sys.modules['cns'] = None; sys.modules['cns.gate'] = None\n"
 
