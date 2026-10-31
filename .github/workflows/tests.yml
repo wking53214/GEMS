@@ -31,7 +31,7 @@ jobs:
         pip install \
           "conservation-kernel @ git+https://github.com/wking53214/Conservation_Kernel.git@570c2c7908d9981dc1988c1028dd394db878d790" \
           "tie-transcript-intelligence-engine @ git+https://github.com/wking53214/TIE.git@895ce7ec2bc10b747dbc0519c7def37a0f447150" \
-          "cns @ git+https://github.com/wking53214/CNS.git@v1.9.0"
+          "cns @ git+https://github.com/wking53214/CNS.git@v2.3.0"
 
     - name: Run tests
       # GEMS_REQUIRE_TRANSPORT=1 (see conftest.py) turns any skipped test into a failure, so the
