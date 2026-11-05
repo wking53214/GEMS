@@ -26,7 +26,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install pytest
         # The transport tests need the kernel, TIE and CNS. The kernel and TIE are pinned to
-        # full commit SHAs (kernel main, TIE main), CNS to the tag v1.9.0; bump them deliberately.
+        # full commit SHAs (kernel main, TIE main), CNS to the tag v2.3.0; bump them deliberately.
         # All three repos are public.
         pip install \
           "conservation-kernel @ git+https://github.com/wking53214/Conservation_Kernel.git@570c2c7908d9981dc1988c1028dd394db878d790" \
