@@ -178,7 +178,8 @@ def _build_synthetic_propositions(source_ref: tuple[str, ...]) -> tuple[Proposit
 
 
 def synthetic_tie_source() -> SyntheticTIESource:
-    registry = EvidenceRegistry()
+    # Synthetic fixture: its human and external actors are labels, not identities.
+    registry = EvidenceRegistry(allow_untrusted_humans=True)
     external = Actor.external("synthetic-source-observer", "synthetic future-TIE fixture")
     model = Actor.model("synthetic-model", "reference Gem fixture")
     # The kernel counts evidence only when it is about the proposition that cites it or one of that

@@ -156,7 +156,10 @@ def test_human_accepted_ai_with_authorization_is_carried_as_adopted():
 def test_an_authorization_the_gateway_does_not_hold_is_refused_at_ingest():
     artifact = load(package([ev("e1", origin="HUMAN_ACCEPTED_AI")]), authorization_refs=("nope",))
     with pytest.raises(RootAdmissionError):
-        ConservationGateway().ingest_source(artifact)
+        ConservationGateway(
+            allow_unguarded_roots=True,
+            allow_unguarded_evidence=True,
+        ).ingest_source(artifact)
 
 
 def test_unknown_origin_is_stated_not_hidden():
@@ -229,7 +232,7 @@ def test_every_gap_is_also_in_the_content_text():
 def test_loading_twice_gives_the_same_digest_so_reingest_is_idempotent():
     pkg = package([ev("e1"), ev("e2", "INFERRED")], known=("x",))
     assert load(pkg).artifact_digest == load(pkg).artifact_digest
-    gateway = ConservationGateway()
+    gateway = ConservationGateway(allow_unguarded_roots=True, allow_unguarded_evidence=True)
     first = gateway.ingest_source(load(pkg))
     assert gateway.ingest_source(load(pkg)) is first
 
@@ -263,7 +266,7 @@ def test_the_artifact_enters_the_gateway_as_a_root_source():
             segments=[seg("INSPECTED", 0), seg("NOT_INSPECTED", 1)],
         )
     )
-    gateway = ConservationGateway()
+    gateway = ConservationGateway(allow_unguarded_roots=True, allow_unguarded_evidence=True)
     gateway.ingest_source(artifact)
     assert gateway.is_accepted(artifact)
 
@@ -273,7 +276,7 @@ def test_the_cns_input_gate_passes_an_ingested_tie_artifact_and_refuses_one_that
     from gems_transport.cns_connector import CnsInputGate
 
     artifact = load(package([ev("e1")]))
-    gateway = ConservationGateway()
+    gateway = ConservationGateway(allow_unguarded_roots=True, allow_unguarded_evidence=True)
     gate = CnsInputGate(gateway)
     assert gate.check(artifact).outcome is cns_gate.GateOutcome.TERMINAL_BREACH
     gateway.ingest_source(artifact)
@@ -313,7 +316,10 @@ def test_a_real_tie_package_with_a_declared_gap_arrives_with_the_gap():
     assert props["ev-1"].epistemic_status is EpistemicStatus.OBSERVATION
     assert props["ev-1"].origin is OriginStatus.MACHINE_ORIGINATED
     assert any("not inspected" in text for text in gap_texts(artifact))
-    ConservationGateway().ingest_source(artifact)
+    ConservationGateway(
+        allow_unguarded_roots=True,
+        allow_unguarded_evidence=True,
+    ).ingest_source(artifact)
 
 
 # Lineage: the TIE package digest ------------------------------------------
@@ -440,7 +446,10 @@ def test_a_real_tie_package_digested_by_the_tie_connector_reaches_the_artifact_u
     artifact = TIEPackageSource(pkg, created_at=NOW, tie_digest=digest).load_artifact()
     carried = {p.metadata["tie_package_digest"] for p in artifact.propositions}
     assert carried == {digest} == {verdict.subject_digest}
-    ConservationGateway().ingest_source(artifact)
+    ConservationGateway(
+        allow_unguarded_roots=True,
+        allow_unguarded_evidence=True,
+    ).ingest_source(artifact)
 
     tampered = dataclasses.replace(
         pkg,

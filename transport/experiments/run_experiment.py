@@ -15,7 +15,13 @@ from .corpus import HumanApprovalFixture, fixed_clock, synthetic_tie_source
 
 def run_reference_pipeline() -> dict[str, Any]:
     fixture = synthetic_tie_source()
-    gateway = ConservationGateway(registry=fixture.registry)
+    # Synthetic fixture: no deployment guards exist here, so the gateway is unguarded on purpose.
+    gateway = ConservationGateway(
+        registry=fixture.registry,
+        allow_unguarded_roots=True,
+        allow_unguarded_evidence=True,
+        clock=fixed_clock,
+    )
     pipeline = Pipeline(gateway)
     gems = (
         SummarizerGem(clock=fixed_clock),
