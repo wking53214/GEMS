@@ -36,7 +36,7 @@ class ArchitectureGem(BaseGem):
             evidence_refs=(self.evidence_ref,),
             authorization_refs=(),
             canonical_state=CanonicalState.PROPOSED,
-            parent_proposition_ids=(parent.proposition_id,),
+            parent_proposition_ids=(parent.proposition_id, *parent.parent_proposition_ids),
             derivation_method="deterministic-architecture-mapping",
         )
         output = self._artifact(
