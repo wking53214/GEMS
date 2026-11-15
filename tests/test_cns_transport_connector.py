@@ -79,7 +79,12 @@ EXPECTED = {
 
 def _gateway():
     fixture = synthetic_tie_source()
-    gateway = ConservationGateway(registry=fixture.registry)
+    gateway = ConservationGateway(
+        registry=fixture.registry,
+        allow_unguarded_roots=True,
+        allow_unguarded_evidence=True,
+        clock=fixed_clock,
+    )
     gateway.ingest_source(fixture.artifact)
     return fixture.artifact, gateway
 

@@ -57,11 +57,12 @@ def _evidence(
     provided_by: Actor,
     *,
     independent: bool = False,
+    subject_id: str = "*",
 ) -> None:
     registry.add_evidence(
         EvidenceRecord(
             evidence_id=evidence_id,
-            subject_id="*",
+            subject_id=subject_id,
             kind=kind,
             provided_by=provided_by,
             independent=independent,
@@ -70,6 +71,10 @@ def _evidence(
             created_at=FIXED_TIME,
         )
     )
+
+
+#: The proposition every reference Gem derives from, directly or through its recorded ancestry.
+SOURCE_PROPOSITION = "p-human-fact"
 
 
 def _build_synthetic_propositions(source_ref: tuple[str, ...]) -> tuple[Proposition, ...]:
@@ -151,7 +156,7 @@ def _build_synthetic_propositions(source_ref: tuple[str, ...]) -> tuple[Proposit
             text="The earlier incident occurred during the January maintenance window.",
             epistemic_status=EpistemicStatus.FACT,
             origin=OriginStatus.EXTERNAL_ORIGINATED,
-            evidence_refs=("ev-source",),
+            evidence_refs=("ev-source", "ev-source-p-historical"),
             source_refs=source_ref,
             temporal=TemporalMetadata(
                 scope=TemporalScope.HISTORICAL,
@@ -173,12 +178,26 @@ def _build_synthetic_propositions(source_ref: tuple[str, ...]) -> tuple[Proposit
 
 
 def synthetic_tie_source() -> SyntheticTIESource:
-    registry = EvidenceRegistry()
+    # Synthetic fixture: its human and external actors are labels, not identities.
+    registry = EvidenceRegistry(allow_untrusted_humans=True)
     external = Actor.external("synthetic-source-observer", "synthetic future-TIE fixture")
     model = Actor.model("synthetic-model", "reference Gem fixture")
-    _evidence(registry, "ev-source", EvidenceKind.SOURCE_OBSERVATION, external, independent=True)
+    # The kernel counts evidence only when it is about the proposition that cites it or one of that
+    # proposition's parents ("*" counts for none). Every reference Gem derives from p-human-fact, directly
+    # or through its recorded ancestry, so the shared evidence is about it.
+    _evidence(
+        registry, "ev-source", EvidenceKind.SOURCE_OBSERVATION, external, independent=True,
+        subject_id=SOURCE_PROPOSITION,
+    )
     _evidence(registry, "ev-conflict", EvidenceKind.CITATION, external)
-    _evidence(registry, "ev-review-consensus", EvidenceKind.MODEL_CONSENSUS, model)
+    _evidence(
+        registry, "ev-review-consensus", EvidenceKind.MODEL_CONSENSUS, model, subject_id=SOURCE_PROPOSITION,
+    )
+    # A root FACT must cite evidence about itself, so p-historical has its own source observation.
+    _evidence(
+        registry, "ev-source-p-historical", EvidenceKind.SOURCE_OBSERVATION, external, independent=True,
+        subject_id="p-historical",
+    )
 
     source_ref = ("tie:synthetic:segment-001",)
     propositions = _build_synthetic_propositions(source_ref)

@@ -11,13 +11,13 @@ requires-python = ">=3.11"
 license = { text = "Apache-2.0" }
 authors = [{ name = "William N. King" }]
 dependencies = [
-    "conservation-kernel",  # Required for transport layer and forensic verification
+    "conservation-kernel @ git+https://github.com/wking53214/Conservation_Kernel.git@cc42d3fc57dec0dd71aabd478b9585d2852a793e",  # Required for transport layer and forensic verification
 ]
 
 [project.optional-dependencies]
 dev = ["pytest>=8"]
 transport = [
-    "conservation-kernel",  # For transport.gems_transport and forensic integrity verification
+    "conservation-kernel @ git+https://github.com/wking53214/Conservation_Kernel.git@cc42d3fc57dec0dd71aabd478b9585d2852a793e",  # For transport.gems_transport and forensic integrity verification
 ]
 # Optional: lets GEMS's verdicts be expressed as CNS gate results. GEMS imports
 # nothing from CNS unless gems.cns_connector or gems_transport.cns_connector is

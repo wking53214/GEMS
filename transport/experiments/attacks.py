@@ -38,7 +38,13 @@ class AttackOutcome:
 
 def run_attack_case(attack: AttackType) -> AttackOutcome:
     fixture = synthetic_tie_source()
-    gateway = ConservationGateway(registry=fixture.registry)
+    # Synthetic fixture: no deployment guards exist here, so the gateway is unguarded on purpose.
+    gateway = ConservationGateway(
+        registry=fixture.registry,
+        allow_unguarded_roots=True,
+        allow_unguarded_evidence=True,
+        clock=fixed_clock,
+    )
     gateway.ingest_source(fixture.artifact)
     gem = AdversarialGem(clock=fixed_clock)
     gateway.register_gem(gem.identity)

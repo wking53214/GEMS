@@ -108,7 +108,11 @@ def test_the_gateway_still_judges_with_cns_blocked():
         from experiments.corpus import fixed_clock, synthetic_tie_source
 
         fixture = synthetic_tie_source()
-        gateway = ConservationGateway(registry=fixture.registry)
+        gateway = ConservationGateway(
+            registry=fixture.registry,
+            allow_unguarded_roots=True,
+            allow_unguarded_evidence=True,
+        )
         run = Pipeline(gateway).run(fixture.artifact, [SummarizerGem(clock=fixed_clock)])
         assert run.accepted
         outcomes = run_hostile_corpus()
@@ -133,7 +137,11 @@ def test_connector_says_what_is_missing_when_cns_is_blocked():
 
         assert cns_available() is False
         fixture = synthetic_tie_source()
-        gateway = ConservationGateway(registry=fixture.registry)
+        gateway = ConservationGateway(
+            registry=fixture.registry,
+            allow_unguarded_roots=True,
+            allow_unguarded_evidence=True,
+        )
         calls = (
             lambda: cns_chain(gateway),
             lambda: input_digest(fixture.artifact),
@@ -162,7 +170,7 @@ def test_constructing_a_cns_gate_fails_at_construction_not_first_use():
         """
         from gems_transport import ConservationGateway
         from gems_transport.cns_connector import CnsInputGate, CnsNotInstalled, CnsOutputGate
-        gateway = ConservationGateway()
+        gateway = ConservationGateway(allow_unguarded_roots=True, allow_unguarded_evidence=True)
         for build in (CnsInputGate, CnsOutputGate):
             try:
                 build(gateway)
@@ -187,7 +195,11 @@ def test_cns_is_checked_before_the_gateway_is_touched():
         from experiments.corpus import fixed_clock, synthetic_tie_source
 
         fixture = synthetic_tie_source()
-        gateway = ConservationGateway(registry=fixture.registry)
+        gateway = ConservationGateway(
+            registry=fixture.registry,
+            allow_unguarded_roots=True,
+            allow_unguarded_evidence=True,
+        )
         gateway.ingest_source(fixture.artifact)
         gem = SummarizerGem(clock=fixed_clock)
         gateway.register_gem(gem.identity)

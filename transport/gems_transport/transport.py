@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable, Collection
 from dataclasses import dataclass
 from typing import Any
 
@@ -67,11 +68,65 @@ class ConservationGateway:
         registry: EvidenceRegistry | None = None,
         gem_registry: GemRegistry | None = None,
         ledger: TransformationLedger | None = None,
+        root_guard: Callable[[Artifact], bool] | None = None,
+        evidence_guard: Callable[[EvidenceRecord], bool] | None = None,
+        trusted_humans: Collection[str] | None = None,
+        allow_unguarded_roots: bool = False,
+        allow_unguarded_evidence: bool = False,
+        allow_untrusted_humans: bool = False,
+        clock: Callable[[], str] | None = None,
     ) -> None:
+        """Guards come from the deployer, never from this package.
+
+        A gateway whose kernel would register any root it admits, or whose registry would take any
+        evidence or any authorization from an actor that labels itself human, is not an enforced
+        boundary. So a gateway that builds its own kernel or registry needs ``root_guard`` and
+        ``evidence_guard`` (and ``trusted_humans`` if it takes authorizations), or says out loud that
+        going without is deliberate with ``allow_unguarded_roots``, ``allow_unguarded_evidence`` and
+        ``allow_untrusted_humans``. With neither, the kernel raises ``UnguardedKernelError`` here, at
+        construction. This package ships no guard: what authorizes a root or a record is the
+        deployment's decision.
+
+        Guards and flags configure what this gateway builds. For a ``kernel`` or ``registry`` you
+        supply, set them on that object instead; passing them here as well raises ``InvalidContract``.
+
+        ``clock`` is the time the kernel decides at (ISO 8601 with offset) and stamps on every decision
+        it records. It defaults to the machine's UTC clock, so two gateways give ledgers that differ in
+        ``verified_at``; hand in the clock of the ledger you write to, or a fixed one for a test.
+        """
+
         if kernel is not None and registry is not None and kernel.registry is not registry:
             raise InvalidContract("provided kernel and registry must share the same registry")
-        self.registry = registry or (kernel.registry if kernel is not None else EvidenceRegistry())
-        self.kernel = kernel or ConservationKernel(registry=self.registry)
+        if kernel is not None and (root_guard is not None or allow_unguarded_roots):
+            raise InvalidContract("set the root guard on the kernel you supply, not on the gateway as well")
+        if (kernel is not None or registry is not None) and (
+            evidence_guard is not None or trusted_humans is not None or allow_untrusted_humans
+        ):
+            raise InvalidContract(
+                "set the evidence guard and trusted humans on the registry you supply, not on the gateway as well"
+            )
+        if kernel is not None and clock is not None:
+            raise InvalidContract("set the clock on the kernel you supply, not on the gateway as well")
+        if kernel is not None and allow_unguarded_evidence:
+            raise InvalidContract(
+                "set allow_unguarded_evidence on the kernel you supply, not on the gateway as well"
+            )
+        self.registry = registry or (
+            kernel.registry
+            if kernel is not None
+            else EvidenceRegistry(
+                evidence_guard=evidence_guard,
+                trusted_humans=trusted_humans,
+                allow_untrusted_humans=allow_untrusted_humans,
+            )
+        )
+        self.kernel = kernel or ConservationKernel(
+            registry=self.registry,
+            root_guard=root_guard,
+            allow_unguarded_roots=allow_unguarded_roots,
+            allow_unguarded_evidence=allow_unguarded_evidence,
+            clock=clock,
+        )
         self.gem_registry = gem_registry or GemRegistry()
         self.ledger = ledger or TransformationLedger()
         self._accepted: dict[str, Artifact] = {}
