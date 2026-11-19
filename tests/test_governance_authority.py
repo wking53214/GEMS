@@ -61,6 +61,7 @@ def test_other_combinations_still_pass(origin, authority):
 
 
 def test_cns_verdict_is_breach_not_pass_for_ai_authorization_claim():
+    pytest.importorskip("cns.gate", reason="cns not installed")
     verdict = validate_to_cns(_artifact(Origin.AI, Authority.HUMAN_AUTHORIZATION))
     assert verdict.outcome.value == "terminal_breach"
     assert "may claim HUMAN_AUTHORIZATION" in verdict.reason
