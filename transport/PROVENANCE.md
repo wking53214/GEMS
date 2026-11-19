@@ -55,18 +55,10 @@ same 20 are accepted by the "control" path that bypasses the gateway; the
 
 ## Known gaps
 
-- **No unit tests.** `experiments/run_experiment.py` is the only
-  verification. "20/20 blocked" is an experiment result, not a test suite.
+- **Experiment script removed.** `experiments/run_experiment.py` was broken and was moved to the Graveyard repo on 2026-11-19. The
+  hostile-corpus tests in `tests/` are the verification.
 - **Not wired into the package.** `transport/` is not on `pyproject.toml`'s
   path and is not imported by `src/gems/` or the `tests/` suite.
 - **Overlaps `src/gems/` without reconciliation** — both define contracts, a
   registry, and a TIE adapter, by different designs. Choosing between them is
   future work.
-
-## How to run
-
-```bash
-pip install -e path/to/conservation_kernel        # or put its src/ on PYTHONPATH
-cd transport
-PYTHONPATH=/path/to/conservation_kernel/src:. python3 -m experiments.run_experiment
-```
