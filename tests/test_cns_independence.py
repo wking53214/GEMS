@@ -111,7 +111,7 @@ def test_connector_says_what_is_missing_when_cns_is_blocked():
             try:
                 call()
             except CnsNotInstalled as exc:
-                assert "pip install 'gems-infrastructure[cns]'" in str(exc)
+                assert "pip install 'gems-infrastructure[cns] @ git+https://github.com/wking53214/GEMS.git@main'" in str(exc)
                 assert isinstance(exc, ImportError)
             else:
                 raise SystemExit('a connector call worked without cns')

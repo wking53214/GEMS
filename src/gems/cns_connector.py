@@ -77,7 +77,7 @@ Real inputs CNS cannot digest (a NaN ``note``, an object as ``source_id``) are
 handled as above: the verdict is ``TERMINAL_BREACH`` and unbound, even when the
 validator itself accepted the artifact.
 
-Install with the extra: ``pip install 'gems-infrastructure[cns]'``.
+Install with the extra: ``pip install 'gems-infrastructure[cns] @ git+https://github.com/wking53214/GEMS.git@main'``.
 """
 
 from __future__ import annotations
@@ -100,7 +100,7 @@ __all__ = [
     "validate_to_cns",
 ]
 
-INSTALL_HINT = "pip install 'gems-infrastructure[cns]'"
+INSTALL_HINT = "pip install 'gems-infrastructure[cns] @ git+https://github.com/wking53214/GEMS.git@main'"
 
 #: The ``gate`` field of a verdict.
 GATE_NAME = "governance"

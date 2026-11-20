@@ -107,7 +107,7 @@ and promotion are one step, by design, so an accepted candidate is promoted and
 a second ``check`` of it is refused as a duplicate. The state changes are
 exactly the ones a direct ``submit`` makes.
 
-Install with the extra: ``pip install 'gems-infrastructure[cns]'`` (the
+Install with the extra: ``pip install 'gems-infrastructure[cns] @ git+https://github.com/wking53214/GEMS.git@main'`` (the
 transport also needs ``conservation-kernel``, which the package already
 requires).
 """
@@ -144,7 +144,7 @@ __all__ = [
     "transformation_digest",
 ]
 
-INSTALL_HINT = "pip install 'gems-infrastructure[cns]'"
+INSTALL_HINT = "pip install 'gems-infrastructure[cns] @ git+https://github.com/wking53214/GEMS.git@main'"
 
 #: The ``gate`` field of an input gate verdict.
 INPUT_GATE_NAME = "gateway_input"

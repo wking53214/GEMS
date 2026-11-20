@@ -88,9 +88,9 @@ pip install /path/to/conservation-kernel
 pip install '/path/to/gems[cns]'        # or '.[cns]' from inside this checkout
 ```
 
-`pip install 'gems-infrastructure[cns]'`, the form the connectors' error
-messages quote, is the same extra spelled for an index and resolves only once
-both packages are published to one.
+`pip install 'gems-infrastructure[cns] @ git+https://github.com/wking53214/GEMS.git@main'`, the form the connectors' error
+messages quote, installs the same extra straight from the repository. The bare `pip install 'gems-infrastructure[cns]'` does
+not work: no package of that name is published.
 
 - `gems.cns_connector` covers `GovernanceValidator` in `src/gems`.
 - `gems_transport.cns_connector` covers the `transport/` gateway (put
