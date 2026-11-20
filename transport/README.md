@@ -42,19 +42,10 @@ gems_transport/
 experiments/
   corpus.py          synthetic TIE source, human-approval fixture
   attacks.py         run_hostile_corpus, control_outcomes
-  run_experiment.py  writes results/initial_run.json
 ```
 
 ## Run
 
-```bash
-cd transport
-PYTHONPATH=/path/to/conservation_kernel/src:. python3 -m experiments.run_experiment
-```
-
-Status, EXECUTED 2026-11-17 at `8e4ba48` with the pinned kernel `cc42d3f`: this
-command stops with `AttributeError: 'NoneType' object has no attribute
-'artifact_id'` in `run_reference_pipeline` (the human-approval step returns no
-accepted artifact), so `results/initial_run.json` is not written. The same
-happens one commit earlier with that commit's kernel pin. The hostile-corpus
-tests in `tests/` pass. A fix is a code change, not made here.
+There is no longer a runnable experiment script. `experiments/run_experiment.py` stopped with an `AttributeError` in its reference
+pipeline (EXECUTED 2026-11-17) and was moved to the Graveyard repo (`GEMS/2026-11-19-transport-run-experiment`). The hostile-corpus
+tests in `tests/` run the attack cases.
