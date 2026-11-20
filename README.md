@@ -38,7 +38,7 @@ EXECUTED 2026-11-17 at `8e4ba48`, Python 3.13, each run in its own fresh environ
 
 - Bare checkout with pytest only: 1 failed, 122 passed, 6 skipped.
 - This package installed (which brings the pinned kernel), no CNS, no TIE: 1 failed, 178 passed, 5 skipped.
-- The way CI runs it (kernel `cc42d3f`, TIE `895ce7e`, CNS v4.0.0, `GEMS_REQUIRE_TRANSPORT=1`): 244 passed, 0 skipped.
+- Before the CNS pin moved to v4.1.0 (2026-11-20), the way CI ran it (kernel `cc42d3f`, TIE `895ce7e`, CNS v4.0.0, `GEMS_REQUIRE_TRANSPORT=1`): 244 passed, 0 skipped.
 - The same with the kernel and TIE at their mains (`8ed1636`, `7619b95`) and CNS v4.1.0: 244 passed.
 
 `tests/test_governance_authority.py::test_cns_verdict_is_breach_not_pass_for_ai_authorization_claim` skips when CNS is absent (it failed before 2026-11-19). The 244 recorded here on 2026-11-15 needs all three siblings installed, not the kernel alone. The transport experiment script, which stopped with an `AttributeError` (EXECUTED 2026-11-17), was moved to the Graveyard repo on 2026-11-19; the hostile-corpus tests in the suite pass. Not run: GitHub CI, Python 3.11 (CI's version).
@@ -78,7 +78,7 @@ is present, two connectors express GEMS's verdicts as CNS gate results so they
 can be resolved alongside gates from other repositories. Native verdicts and
 behavior are unchanged.
 
-The extra pins CNS v4.0.0 by tag. Neither `gems-infrastructure` nor its
+The extra pins CNS v4.1.0 by tag. Neither `gems-infrastructure` nor its
 existing dependency `conservation-kernel` is on a package index, so as things
 stand install the kernel from its own repository first and then this repo from a
 checkout with the extra:

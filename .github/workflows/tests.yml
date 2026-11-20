@@ -26,12 +26,12 @@ jobs:
         python -m pip install --upgrade pip
         pip install pytest
         # The transport tests need the kernel, TIE and CNS. The kernel and TIE are pinned to
-        # full commit SHAs (kernel main, TIE main), CNS to the tag v4.0.0; bump them deliberately.
+        # full commit SHAs (kernel main, TIE main), CNS to the tag v4.1.0; bump them deliberately.
         # All three repos are public.
         pip install \
           "conservation-kernel @ git+https://github.com/wking53214/Conservation_Kernel.git@cc42d3fc57dec0dd71aabd478b9585d2852a793e" \
           "tie-transcript-intelligence-engine @ git+https://github.com/wking53214/TIE.git@895ce7ec2bc10b747dbc0519c7def37a0f447150" \
-          "cns @ git+https://github.com/wking53214/CNS.git@v4.0.0"
+          "cns @ git+https://github.com/wking53214/CNS.git@v4.1.0"
 
     - name: Run tests
       # GEMS_REQUIRE_TRANSPORT=1 (see conftest.py) turns any skipped test into a failure, so the
